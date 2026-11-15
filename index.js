@@ -607,16 +607,32 @@ function openWindow(tab) {
     switchTab(typeof tab === 'string' ? tab : state.tab);
     overlay.classList.add('cf-open');
     document.body.classList.add('cf-lock');
+    syncViewport();
 }
 function destroyWindow() { overlay?.remove(); overlay = null; }
 function closeWindow() {
     overlay?.classList.remove('cf-open');
     document.body.classList.remove('cf-lock');
 }
+/** Подгоняет окно под реально видимую область (адресная строка и клавиатура на телефонах). */
+function syncViewport() {
+    if (!overlay) return;
+    const vv = window.visualViewport;
+    if (!vv || Math.abs(vv.scale - 1) > 0.01) {
+        overlay.style.removeProperty('--cf-vh');
+        overlay.style.removeProperty('--cf-top');
+        return;
+    }
+    overlay.style.setProperty('--cf-vh', `${Math.round(vv.height)}px`);
+    overlay.style.setProperty('--cf-top', `${Math.round(vv.offsetTop)}px`);
+}
 function initGlobalHandlers() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay?.classList.contains('cf-open')) closeWindow();
     });
+    window.visualViewport?.addEventListener('resize', syncViewport);
+    window.visualViewport?.addEventListener('scroll', syncViewport);
+    window.addEventListener('orientationchange', () => setTimeout(syncViewport, 300));
 }
 function applyTheme() { if (overlay) overlay.dataset.theme = getSettings().theme; }
 
@@ -696,11 +712,11 @@ function buildWindow() {
           </div>
         </div>
         <div class="cf-foot">
-          <button class="cf-btn" id="cf-compress" data-act><i class="fa-solid fa-compress"></i> ${t('compress')}</button>
-          <button class="cf-btn" id="cf-copy" data-act><i class="fa-solid fa-copy"></i> ${t('copy')}</button>
-          <button class="cf-btn" id="cf-save" data-act><i class="fa-solid fa-book-bookmark"></i> ${t('save')}</button>
-          <button class="cf-btn" id="cf-export" data-act><i class="fa-solid fa-file-export"></i> ${t('exportJson')}</button>
-          <button class="cf-btn cf-primary" id="cf-create" data-act><i class="fa-solid fa-user-plus"></i> ${t('createChar')}</button>
+          <button class="cf-btn" id="cf-compress" data-act title="${t('compress')}"><i class="fa-solid fa-compress"></i><span class="cf-bl">${t('compress')}</span></button>
+          <button class="cf-btn" id="cf-copy" data-act title="${t('copy')}"><i class="fa-solid fa-copy"></i><span class="cf-bl">${t('copy')}</span></button>
+          <button class="cf-btn" id="cf-save" data-act title="${t('save')}"><i class="fa-solid fa-book-bookmark"></i><span class="cf-bl">${t('save')}</span></button>
+          <button class="cf-btn" id="cf-export" data-act title="${t('exportJson')}"><i class="fa-solid fa-file-export"></i><span class="cf-bl">${t('exportJson')}</span></button>
+          <button class="cf-btn cf-primary" id="cf-create" data-act title="${t('createChar')}"><i class="fa-solid fa-user-plus"></i><span class="cf-bl">${t('createChar')}</span></button>
         </div>
       </div>
 
