@@ -1,0 +1,12 @@
+{
+    "display_name": "CharForge — Конструктор персонажей",
+    "loading_order": 100,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Ayrissa",
+    "version": "0.1.1",
+    "homePage": "https://github.com/Ayrissa/ST-CharForge",
+    "auto_update": true
+}

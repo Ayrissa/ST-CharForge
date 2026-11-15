@@ -1,0 +1,122 @@
+/* CharForge */
+:root {
+    --cf-accent: #a07cf0;
+    --cf-bg: #17171d;
+    --cf-panel: #22222b;
+    --cf-text: #ecebf2;
+}
+
+body.cf-lock { overflow: hidden; }
+
+.cf-overlay {
+    position: fixed; inset: 0; z-index: 5000;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, .62);
+    backdrop-filter: blur(3px);
+}
+.cf-overlay.cf-open { display: flex; }
+
+.cf-window {
+    width: min(1040px, 96vw);
+    height: min(92vh, 920px);
+    height: min(92dvh, 920px);
+    display: flex; flex-direction: column;
+    background: var(--cf-bg); color: var(--cf-text);
+    border: 1px solid var(--cf-accent);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+    font-size: 15px;
+}
+
+.cf-head, .cf-foot {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; background: var(--cf-panel);
+}
+.cf-head { justify-content: space-between; border-bottom: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); }
+.cf-foot { flex-wrap: wrap; justify-content: flex-end; border-top: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+.cf-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1em; }
+.cf-title i { color: var(--cf-accent); }
+.cf-head-actions { display: flex; gap: 6px; }
+
+.cf-body {
+    flex: 1; min-height: 0; overflow-y: auto;
+    display: grid; grid-template-columns: minmax(280px, 38%) 1fr;
+    gap: 14px; padding: 14px;
+}
+.cf-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+.cf-label { font-weight: 600; font-size: .9em; opacity: .85; }
+
+.cf-ta, .cf-input-line {
+    width: 100%; box-sizing: border-box;
+    background: var(--cf-panel); color: var(--cf-text);
+    border: 1px solid color-mix(in srgb, var(--cf-text) 18%, transparent);
+    border-radius: 8px; padding: 8px 10px;
+    font: inherit; font-size: 16px; line-height: 1.4;
+    resize: vertical;
+}
+.cf-ta:focus, .cf-input-line:focus { outline: none; border-color: var(--cf-accent); }
+.cf-ta-sec { resize: none; overflow: hidden; font-size: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+.cf-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.cf-btn, .cf-icon-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    background: var(--cf-panel); color: var(--cf-text);
+    border: 1px solid color-mix(in srgb, var(--cf-accent) 55%, transparent);
+    border-radius: 8px; padding: 8px 14px; cursor: pointer;
+    font: inherit; font-size: .95em; min-height: 40px;
+    transition: background .15s, transform .05s;
+}
+.cf-btn:hover:not(:disabled), .cf-icon-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 25%, var(--cf-panel)); }
+.cf-btn:active:not(:disabled) { transform: scale(.98); }
+.cf-btn:disabled, .cf-icon-btn:disabled { opacity: .45; cursor: not-allowed; }
+.cf-btn[hidden] { display: none; }
+.cf-primary { background: var(--cf-accent); color: #fff; border-color: var(--cf-accent); font-weight: 600; }
+.cf-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 85%, #fff); }
+.cf-danger { border-color: #d06060; }
+.cf-small { padding: 4px 10px; min-height: 34px; }
+.cf-icon-btn { padding: 6px 10px; min-height: 36px; border-color: transparent; background: transparent; }
+
+.cf-note, .cf-hint { font-size: .8em; opacity: .65; }
+.cf-status { min-height: 1.3em; font-size: .9em; color: var(--cf-accent); }
+.cf-status.cf-err { color: #ff8a8a; }
+
+.cf-images { display: flex; flex-wrap: wrap; gap: 8px; }
+.cf-thumb { position: relative; width: 72px; height: 72px; }
+.cf-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--cf-accent); }
+.cf-thumb-x {
+    position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;
+    border-radius: 50%; border: none; cursor: pointer;
+    background: #d06060; color: #fff; line-height: 1; font-size: 15px;
+}
+
+.cf-meter { display: flex; align-items: center; gap: 10px; font-size: .9em; position: sticky; top: 0; background: var(--cf-bg); padding: 4px 0; z-index: 1; }
+.cf-meter span { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cf-over-text { color: #ff8a8a; font-weight: 600; }
+.cf-bar { flex: 1; height: 8px; background: var(--cf-panel); border-radius: 4px; overflow: hidden; }
+#cf-bar-fill { height: 100%; width: 0; background: var(--cf-accent); transition: width .25s; }
+#cf-bar-fill.cf-over { background: #e05a5a; }
+
+#cf-sections { display: flex; flex-direction: column; gap: 10px; }
+.cf-card { background: color-mix(in srgb, var(--cf-panel) 60%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.cf-card-title { font-weight: 700; color: var(--cf-accent); }
+.cf-sec-row .cf-input-line { flex: 1; min-width: 120px; padding: 5px 8px; font-size: 14px; }
+.cf-empty { opacity: .55; text-align: center; padding: 40px 10px; }
+.cf-empty[hidden] { display: none; }
+
+/* Настройки */
+.cf-settings { display: flex; flex-direction: column; gap: 8px; }
+.cf-settings label { display: flex; flex-direction: column; gap: 3px; }
+.cf-settings label.checkbox_label { flex-direction: row; align-items: center; }
+.cf-s-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.cf-s-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 4px 10px; }
+.cf-s-colors { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
+.cf-s-colors input[type="color"] { width: 100%; height: 34px; padding: 0; border: none; background: none; cursor: pointer; }
+
+/* Телефон */
+@media (max-width: 720px) {
+    .cf-window { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: none; }
+    .cf-body { grid-template-columns: 1fr; padding: 10px; }
+    .cf-foot .cf-btn { flex: 1 1 45%; }
+    .cf-head { padding-top: max(10px, env(safe-area-inset-top)); }
+}
