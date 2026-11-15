@@ -1,156 +1,164 @@
 // CharForge — конструктор персонажей для SillyTavern (единый файл, без зависимостей от подпапок).
 
-/* ═══ src/i18n.js ═══ */
-// Интерфейс: русский по умолчанию, английский опционально. Сама анкета всегда на английском.
+/* ═══ i18n ═══ */
 const D = {
     ru: {
         title: 'Конструктор персонажей',
         menu: 'Конструктор персонажей',
+        tabCreate: 'Создание', tabLibrary: 'Библиотека', tabSettings: 'Настройки',
+        close: 'Закрыть', clearAll: 'Очистить редактор',
+        clearConfirm: 'Очистить имя, описание, референсы, анкету и первое сообщение? Библиотека не затрагивается.',
+        name: 'Имя', namePh: 'Оставь пустым: ИИ придумает сам',
         concept: 'Описание персонажа',
         conceptPh: 'Опиши идею своими словами: кто это, какой характер, сеттинг, что важно сохранить. Можно кратко: ИИ додумает остальное.',
         refs: 'Референсы',
-        refsPh: 'Текстовые референсы: цитаты, факты, ссылки на образ, «похож на…». Модель считает это каноном.',
-        addImage: 'Добавить картинку',
-        imgNote: 'Картинки учитываются только мультимодальными моделями. Сжимаются до 768 px.',
-        imgNoteOff: 'Отправка картинок выключена в настройках.',
-        generate: 'Сгенерировать анкету',
-        cancel: 'Отмена',
-        generating: 'Генерирую…',
-        compressing: 'Сжимаю…',
-        regenerating: 'Перегенерирую секцию…',
+        refsPh: 'Текстовые референсы: цитаты, факты, «похож на…». Модель считает это каноном.',
+        addImage: 'Картинка-референс',
+        imgNote: 'Картинки-референсы видят только мультимодальные модели. Сжимаются до 768 px.',
+        imgNoteOff: 'Отправка картинок модели выключена в настройках.',
+        avatar: 'Аватар карточки', avatarPick: 'Выбрать аватар', avatarRemove: 'Убрать',
+        avatarAsRef: 'Учитывать аватар как референс внешности',
+        generate: 'Сгенерировать анкету', cancel: 'Отмена',
+        generating: 'Генерирую…', compressing: 'Сжимаю…', regenerating: 'Перегенерирую секцию…', genFirstBusy: 'Пишу первое сообщение…',
         done: 'Готово',
         empty: 'Здесь появится анкета. Опиши персонажа слева и нажми «Сгенерировать».',
         tokens: '{n} / {max} токенов',
-        compress: 'Сжать',
-        copy: 'Копировать',
-        copied: 'Скопировано',
-        exportJson: 'Экспорт JSON',
-        createChar: 'Создать персонажа',
+        compress: 'Сжать', copy: 'Копировать', copied: 'Скопировано',
+        save: 'В библиотеку', saved: 'Сохранено в библиотеке',
+        exportJson: 'Экспорт JSON', createChar: 'Создать персонажа',
         created: 'Персонаж «{name}» создан',
-        clearAll: 'Очистить всё',
-        clearConfirm: 'Очистить описание, референсы и анкету?',
-        close: 'Закрыть',
-        secWish: 'Пожелание (необязательно)',
-        secRegen: 'Перегенерировать',
-        // ошибки
-        errNoProfile: 'Не выбран профиль подключения. Выбери его в Extensions → CharForge или в Connection Manager.',
+        secWish: 'Пожелание (необязательно)', secRegen: 'Перегенерировать', secGen: 'Сгенерировать',
+        firstMes: 'Первое сообщение',
+        scene: 'Сцена / ситуация (необязательно)', scenePh: 'Например: она встречает {{user}} в ночной таверне',
+        genFirst: 'Сгенерировать первое сообщение', regenFirst: 'Перегенерировать',
+        firstPh: 'Первое сообщение появится здесь. Оно хранится отдельно от анкеты и не входит в её токены.',
+        words: '{n} / {max} слов',
+        errNoProfile: 'Не выбран профиль подключения. Выбери его на вкладке «Настройки» или в Connection Manager.',
         errNoService: 'Connection Manager недоступен. Включи его в Extensions → Manage extensions.',
         errEmpty: 'Сначала опиши персонажа.',
         errParse: 'Не удалось разобрать ответ модели. Попробуй ещё раз.',
         errNoDossier: 'Сначала сгенерируй анкету.',
+        errMissing: 'Модель пропустила секции: {list}. Нажми «Сгенерировать» у нужной секции.',
         errFailed: 'Ошибка запроса: {msg}',
         errCreate: 'Не удалось создать персонажа: {msg}',
         cancelled: 'Отменено',
-        namePrompt: 'Имя персонажа не найдено в анкете. Введи имя:',
+        namePrompt: 'Имя персонажа не найдено. Введи имя:',
+        // библиотека
+        libSearch: 'Поиск по библиотеке…', libEmpty: 'Библиотека пуста. Сохрани персонажа кнопкой «В библиотеку».',
+        libNone: 'Ничего не найдено.',
+        libEdit: 'Открыть в редакторе', libToST: 'Создать в Таверне', libJson: 'Экспорт JSON', libDelete: 'Удалить',
+        libDeleteConfirm: 'Удалить «{name}» из библиотеки?',
+        libLoadConfirm: 'Заменить текущее содержимое редактора выбранным персонажем?',
+        libNote: 'Библиотека хранится в настройках Таверны (вместе с аватарами).',
+        untitled: 'Без имени', tokShort: 'ток.',
         // настройки
-        sSections: 'Секции анкеты',
-        sProfile: 'Профиль подключения',
-        sProfileCur: '— Текущий профиль Таверны —',
-        sProfileNote: 'Используются только профили Connection Manager. Ключи API расширение не видит.',
-        sBudget: 'Бюджет анкеты (токены)',
-        sMax: 'Лимит ответа модели (токены)',
-        sExamples: 'Примеров реплик',
+        gGeneral: 'Основное', gGen: 'Генерация', gFirst: 'Первое сообщение', gTheme: 'Тема', gSections: 'Секции анкеты',
         sLang: 'Язык интерфейса',
+        sProfile: 'Профиль подключения', sProfileCur: '— Текущий профиль Таверны —',
+        sProfileNote: 'Используются только профили Connection Manager. Ключи API расширение не видит.',
+        sBudget: 'Бюджет анкеты (токены)', sMax: 'Лимит ответа модели (токены)', sExamples: 'Примеров реплик',
+        sCreativity: 'Свобода додумывания',
+        cStrict: 'Строго', cBalanced: 'Баланс', cFree: 'Смело',
+        cStrictH: 'Только то, что следует из описания.',
+        cBalancedH: 'Заполняет пробелы правдоподобными деталями.',
+        cFreeH: 'Смелые детали, секреты, противоречия, события прошлого.',
+        sPeople: 'Додумывать окружение (родные, друзья, враги с именами)',
         sImages: 'Отправлять картинки-референсы модели',
-        sColors: 'Цвета',
-        sAccent: 'Акцент',
-        sBg: 'Фон',
-        sPanel: 'Панели',
-        sText: 'Текст',
-        sReset: 'Сбросить цвета',
-        sOpen: 'Открыть конструктор',
+        sFirstWords: 'Лимит первого сообщения (слов)',
+        sFirstLang: 'Язык первого сообщения', lAuto: 'Как в описании', lEn: 'Английский', lRu: 'Русский',
+        sFirstFmt: 'Оформление', fAst: '*Действия* и «реплики»', fPlain: 'Обычный текст',
         sBasicNote: 'Базовые данные включены всегда.',
-        'sec.basic': 'Базовые данные',
-        'sec.appearance': 'Внешность',
-        'sec.personality': 'Характер',
-        'sec.backstory': 'Прошлое',
-        'sec.skills': 'Навыки',
-        'sec.details': 'Детали образа',
-        'sec.sexuality': 'Сексуальность',
-        'sec.relationships': 'Взаимоотношения',
-        'sec.speech': 'Манера речи',
+        sOpen: 'Открыть конструктор',
+        thAuto: 'Авто', thMidnight: 'Полночь', thRose: 'Роза', thForest: 'Лес', thPaper: 'Бумага',
+        thAutoH: 'Авто подстраивается под цвета текущей темы Таверны.',
+        'sec.basic': 'Базовые данные', 'sec.appearance': 'Внешность', 'sec.personality': 'Характер',
+        'sec.backstory': 'Прошлое', 'sec.skills': 'Навыки', 'sec.details': 'Детали образа',
+        'sec.sexuality': 'Сексуальность', 'sec.relationships': 'Взаимоотношения', 'sec.speech': 'Манера речи',
     },
     en: {
         title: 'Character Forge',
         menu: 'Character Forge',
+        tabCreate: 'Create', tabLibrary: 'Library', tabSettings: 'Settings',
+        close: 'Close', clearAll: 'Clear editor',
+        clearConfirm: 'Clear name, concept, references, dossier and first message? The library is not affected.',
+        name: 'Name', namePh: 'Leave empty: the AI will invent one',
         concept: 'Character concept',
         conceptPh: 'Describe the idea in your own words: who they are, personality, setting, what must be kept. Short is fine, the AI fills in the rest.',
         refs: 'References',
         refsPh: 'Text references: quotes, facts, "looks like…". The model treats them as canon.',
-        addImage: 'Add image',
-        imgNote: 'Images only work with multimodal models. Downscaled to 768 px.',
-        imgNoteOff: 'Sending images is disabled in settings.',
-        generate: 'Generate dossier',
-        cancel: 'Cancel',
-        generating: 'Generating…',
-        compressing: 'Compressing…',
-        regenerating: 'Regenerating section…',
+        addImage: 'Reference image',
+        imgNote: 'Reference images only work with multimodal models. Downscaled to 768 px.',
+        imgNoteOff: 'Sending images to the model is disabled in settings.',
+        avatar: 'Card avatar', avatarPick: 'Choose avatar', avatarRemove: 'Remove',
+        avatarAsRef: 'Also use the avatar as an appearance reference',
+        generate: 'Generate dossier', cancel: 'Cancel',
+        generating: 'Generating…', compressing: 'Compressing…', regenerating: 'Regenerating section…', genFirstBusy: 'Writing the first message…',
         done: 'Done',
         empty: 'The dossier will appear here. Describe a character on the left and press "Generate".',
         tokens: '{n} / {max} tokens',
-        compress: 'Compress',
-        copy: 'Copy',
-        copied: 'Copied',
-        exportJson: 'Export JSON',
-        createChar: 'Create character',
+        compress: 'Compress', copy: 'Copy', copied: 'Copied',
+        save: 'To library', saved: 'Saved to the library',
+        exportJson: 'Export JSON', createChar: 'Create character',
         created: 'Character "{name}" created',
-        clearAll: 'Clear all',
-        clearConfirm: 'Clear concept, references and dossier?',
-        close: 'Close',
-        secWish: 'Instruction (optional)',
-        secRegen: 'Regenerate',
-        errNoProfile: 'No connection profile selected. Pick one in Extensions → CharForge or in Connection Manager.',
+        secWish: 'Instruction (optional)', secRegen: 'Regenerate', secGen: 'Generate',
+        firstMes: 'First message',
+        scene: 'Scene / situation (optional)', scenePh: 'E.g. she meets {{user}} in a night tavern',
+        genFirst: 'Generate first message', regenFirst: 'Regenerate',
+        firstPh: 'The first message appears here. It is stored separately and does not count toward the dossier tokens.',
+        words: '{n} / {max} words',
+        errNoProfile: 'No connection profile selected. Pick one in the Settings tab or in Connection Manager.',
         errNoService: 'Connection Manager is unavailable. Enable it in Extensions → Manage extensions.',
         errEmpty: 'Describe the character first.',
         errParse: 'Could not parse the model response. Try again.',
         errNoDossier: 'Generate a dossier first.',
+        errMissing: 'The model skipped sections: {list}. Press "Generate" on the section you need.',
         errFailed: 'Request failed: {msg}',
         errCreate: 'Could not create character: {msg}',
         cancelled: 'Cancelled',
-        namePrompt: 'Character name not found in the dossier. Enter a name:',
-        sSections: 'Dossier sections',
-        sProfile: 'Connection profile',
-        sProfileCur: '— Current SillyTavern profile —',
-        sProfileNote: 'Only Connection Manager profiles are used. The extension never sees API keys.',
-        sBudget: 'Dossier budget (tokens)',
-        sMax: 'Model response limit (tokens)',
-        sExamples: 'Dialogue examples',
+        namePrompt: 'Character name not found. Enter a name:',
+        libSearch: 'Search the library…', libEmpty: 'The library is empty. Save a character with "To library".',
+        libNone: 'Nothing found.',
+        libEdit: 'Open in editor', libToST: 'Create in SillyTavern', libJson: 'Export JSON', libDelete: 'Delete',
+        libDeleteConfirm: 'Delete "{name}" from the library?',
+        libLoadConfirm: 'Replace the current editor contents with the selected character?',
+        libNote: 'The library is stored in SillyTavern settings (avatars included).',
+        untitled: 'Untitled', tokShort: 'tok.',
+        gGeneral: 'General', gGen: 'Generation', gFirst: 'First message', gTheme: 'Theme', gSections: 'Dossier sections',
         sLang: 'Interface language',
+        sProfile: 'Connection profile', sProfileCur: '— Current SillyTavern profile —',
+        sProfileNote: 'Only Connection Manager profiles are used. The extension never sees API keys.',
+        sBudget: 'Dossier budget (tokens)', sMax: 'Model response limit (tokens)', sExamples: 'Dialogue examples',
+        sCreativity: 'Creative freedom',
+        cStrict: 'Strict', cBalanced: 'Balanced', cFree: 'Bold',
+        cStrictH: 'Only what follows from the concept.',
+        cBalancedH: 'Fills gaps with plausible details.',
+        cFreeH: 'Bold details, secrets, contradictions, past events.',
+        sPeople: 'Invent surrounding people (named family, allies, enemies)',
         sImages: 'Send reference images to the model',
-        sColors: 'Colors',
-        sAccent: 'Accent',
-        sBg: 'Background',
-        sPanel: 'Panels',
-        sText: 'Text',
-        sReset: 'Reset colors',
-        sOpen: 'Open Character Forge',
+        sFirstWords: 'First message limit (words)',
+        sFirstLang: 'First message language', lAuto: 'Same as concept', lEn: 'English', lRu: 'Russian',
+        sFirstFmt: 'Formatting', fAst: '*Actions* and "speech"', fPlain: 'Plain prose',
         sBasicNote: 'Basic info is always on.',
-        'sec.basic': 'Basic info',
-        'sec.appearance': 'Appearance',
-        'sec.personality': 'Personality',
-        'sec.backstory': 'Backstory',
-        'sec.skills': 'Skills',
-        'sec.details': 'Extra details',
-        'sec.sexuality': 'Sexuality',
-        'sec.relationships': 'Relationships',
-        'sec.speech': 'Speech',
+        sOpen: 'Open Character Forge',
+        thAuto: 'Auto', thMidnight: 'Midnight', thRose: 'Rose', thForest: 'Forest', thPaper: 'Paper',
+        thAutoH: 'Auto follows the colors of the current SillyTavern theme.',
+        'sec.basic': 'Basic info', 'sec.appearance': 'Appearance', 'sec.personality': 'Personality',
+        'sec.backstory': 'Backstory', 'sec.skills': 'Skills', 'sec.details': 'Extra details',
+        'sec.sexuality': 'Sexuality', 'sec.relationships': 'Relationships', 'sec.speech': 'Speech',
     },
 };
 
-let lang = 'ru';
-const setLang = (l) => { lang = D[l] ? l : 'ru'; };
-const getLang = () => lang;
+let LANG = 'ru';
+const setLang = (l) => { LANG = D[l] ? l : 'ru'; };
 function t(key, vars = {}) {
-    let s = D[lang][key] ?? D.ru[key] ?? key;
+    let s = D[LANG][key] ?? D.ru[key] ?? key;
     for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, String(v));
     return s;
 }
 
-/* ═══ src/schema.js ═══ */
-// Структура анкеты и настройки по умолчанию.
+/* ═══ schema ═══ */
 const KEY = 'charforge';
 
-/** Секции анкеты. weight — доля токенового бюджета. hint — подсказка для модели (может быть функцией от настроек). */
 const SECTIONS = [
     {
         id: 'basic', title: 'Basic', weight: 0.08, fields: [
@@ -212,10 +220,10 @@ const SECTIONS = [
     },
     {
         id: 'relationships', title: 'Relationships', weight: 0.10, fields: [
-            { key: 'Family', hint: 'relatives or their absence' },
-            { key: 'Allies', hint: 'friends, allies' },
-            { key: 'Enemies', hint: 'rivals, antagonists' },
-            { key: 'Toward {{user}}', hint: 'concrete attitude and relationship to {{user}}' },
+            { key: 'Family', hint: (s) => s.inventPeople ? 'named relatives, each with relation and 1-3 words of detail (invent if not given); "none" only if explicitly orphaned/alone' : 'relatives mentioned in the input, otherwise "none"' },
+            { key: 'Allies', hint: (s) => s.inventPeople ? 'named friends/allies, each with relation and 1-3 words of detail (invent if not given)' : 'friends/allies mentioned in the input, otherwise "none"' },
+            { key: 'Enemies', hint: (s) => s.inventPeople ? 'named rivals/antagonists, each with the reason for conflict (invent if not given)' : 'rivals/antagonists mentioned in the input, otherwise "none"' },
+            { key: 'Toward {{user}}', hint: 'initial attitude and dynamic toward {{user}}; always fill, infer from the concept' },
         ],
     },
     {
@@ -230,51 +238,64 @@ const SECTIONS = [
     },
 ];
 
+/** Темы. Цвета описаны в style.css; здесь только превью для переключателя. */
+const THEMES = [
+    { id: 'auto', bg: '#17171d', ac: '#f6f1e7' },
+    { id: 'midnight', bg: '#17171d', ac: '#a07cf0' },
+    { id: 'rose', bg: '#1f1519', ac: '#e0709a' },
+    { id: 'forest', bg: '#111a16', ac: '#5fbf8a' },
+    { id: 'paper', bg: '#f6f1e7', ac: '#9a5b2e' },
+];
+
+const DEFAULT_DRAFT = {
+    name: '', concept: '', refText: '', dossier: {}, firstMes: '', scene: '',
+    avatar: '', avatarAsRef: false, libraryId: '',
+};
+
 const DEFAULTS = {
     lang: 'ru',
+    theme: 'auto',
     profileId: '',
     tokenBudget: 1000,
     maxResponse: 3000,
     examples: 4,
+    creativity: 'balanced',
+    inventPeople: true,
     sendImages: true,
+    firstMesWords: 300,
+    firstMesLang: 'auto',
+    firstMesFmt: 'asterisks',
     sections: Object.fromEntries(SECTIONS.map(s => [s.id, true])),
-    colors: { accent: '#a07cf0', bg: '#17171d', panel: '#22222b', text: '#ecebf2' },
-    draft: { concept: '', refText: '', dossier: {} },
+    draft: DEFAULT_DRAFT,
+    library: [],
 };
 
 function getSettings() {
     const store = SillyTavern.getContext().extensionSettings;
-    const cur = store[KEY] || {};
-    store[KEY] = {
-        ...structuredClone(DEFAULTS),
-        ...cur,
-        sections: { ...DEFAULTS.sections, ...(cur.sections || {}) },
-        colors: { ...DEFAULTS.colors, ...(cur.colors || {}) },
-        draft: { ...structuredClone(DEFAULTS.draft), ...(cur.draft || {}) },
-    };
-    return store[KEY];
+    if (!store[KEY] || typeof store[KEY] !== 'object') store[KEY] = {};
+    const s = store[KEY];
+    for (const [k, v] of Object.entries(DEFAULTS)) if (s[k] === undefined) s[k] = structuredClone(v);
+    if (!s.sections || typeof s.sections !== 'object') s.sections = {};
+    for (const [k, v] of Object.entries(DEFAULTS.sections)) if (s.sections[k] === undefined) s.sections[k] = v;
+    if (!s.draft || typeof s.draft !== 'object') s.draft = {};
+    for (const [k, v] of Object.entries(DEFAULT_DRAFT)) if (s.draft[k] === undefined) s.draft[k] = structuredClone(v);
+    if (!Array.isArray(s.library)) s.library = [];
+    return s;
 }
-
-function saveSettings() {
-    SillyTavern.getContext().saveSettingsDebounced();
-}
-
-function applyColors() {
-    const c = getSettings().colors;
-    const r = document.documentElement.style;
-    r.setProperty('--cf-accent', c.accent);
-    r.setProperty('--cf-bg', c.bg);
-    r.setProperty('--cf-panel', c.panel);
-    r.setProperty('--cf-text', c.text);
-}
-
+const saveSettings = () => SillyTavern.getContext().saveSettingsDebounced();
 const isOn = (s, sec) => sec.id === 'basic' || !!s.sections[sec.id];
 
-/* ═══ src/prompt.js ═══ */
-// Построение промптов, разбор ответа и сборка итогового текста анкеты.
-const WORDS_PER_TOKEN = 0.72; // ~0.72 англ. слова на токен (с запасом на пунктуацию)
+/* ═══ prompts ═══ */
+const WORDS_PER_TOKEN = 0.72;
 const enabledSections = (s) => SECTIONS.filter(x => isOn(s, x));
 const wordBudget = (tokens) => Math.max(40, Math.round(tokens * WORDS_PER_TOKEN * 0.92));
+const countWords = (text) => (text.trim() ? text.trim().split(/\s+/).length : 0);
+
+const CREATIVITY_RULES = {
+    strict: 'Stay close to the input: add only details strongly implied by the concept or references. Keep unmentioned aspects short and generic; do NOT invent major backstory events. Input facts always stay true.',
+    balanced: 'Fill the gaps: invent plausible, fitting details so the character feels complete, specific and coherent, including small backstory facts and habits. Prefer concrete details over generic ones. Input facts always stay true.',
+    free: 'Be bold and inventive: add distinctive hooks, secrets, inner contradictions, backstory events and memorable quirks that fit the concept. Avoid cliches. Input facts always stay true.',
+};
 
 function skeleton(s, secs) {
     const total = wordBudget(s.tokenBudget);
@@ -289,27 +310,33 @@ function skeleton(s, secs) {
     }).join('\n\n');
 }
 
-function rules(s, secs) {
+function rules(s, secs, name) {
     const words = wordBudget(s.tokenBudget);
     const r = [
-        'You write compact character dossiers for roleplay character cards.',
-        'Rules:',
-        '1. Output ONLY the dossier: no preface, no commentary, no markdown, no code fences.',
-        '2. Use exactly the section headers in square brackets and exactly the field keys from the skeleton, in the same order, one field per line. Do NOT copy the word targets or the <hints>.',
-        '3. Write terse fragments separated by commas or semicolons. No full sentences, no filler, no flowery prose, no repetition between fields.',
-        `4. HARD LIMIT: the whole dossier is at most ${words} words (about ${s.tokenBudget} tokens). Respect the per-section word targets.`,
-        '5. Expand the concept: invent missing details so the character feels complete, specific and coherent. Prefer distinctive concrete details over generic ones; inner contradictions are welcome. Never contradict facts given by the user or the references.',
-        '6. Write {{char}} for the character and {{user}} for the user\'s character. The real name appears only in the Name field.',
-        '7. Write in English.',
+        'Output ONLY the dossier: no preface, no commentary, no markdown, no code fences.',
+        'Use exactly the section headers in square brackets and exactly the field keys from the skeleton, in the same order, one field per line. Do NOT copy the word targets or the <hints>.',
+        'Never omit a section or a field. Every field must contain content.',
+        'Write terse fragments separated by commas or semicolons. No full sentences, no filler, no flowery prose, no repetition between fields.',
+        `HARD LIMIT: the whole dossier is at most ${words} words (about ${s.tokenBudget} tokens). Respect the per-section word targets.`,
+        CREATIVITY_RULES[s.creativity] || CREATIVITY_RULES.balanced,
+        'Write {{char}} for the character and {{user}} for the user\'s character. The real name appears only in the Name field.',
+        name ? `The character's name is "${name}": use it exactly in the Name field.` : 'Invent a fitting name for the Name field.',
+        'Write in English.',
     ];
-    if (secs.some(x => x.id === 'sexuality')) {
-        r.push('8. The Sexuality section applies to adults only: if the character is under 18, write N/A in each of its fields.');
+    if (secs.some(x => x.id === 'relationships')) {
+        r.push(s.inventPeople
+            ? 'Relationships: invent specific named people around the character (family, allies, enemies) with a few words on each relation.'
+            : 'Relationships: use only people mentioned in the input; otherwise write "none".');
     }
-    return r.join('\n');
+    if (secs.some(x => x.id === 'sexuality')) {
+        r.push('The Sexuality section applies to adults only: if the character is under 18, write N/A in each of its fields.');
+    }
+    return 'You write compact character dossiers for roleplay character cards.\nRules:\n' + r.map((x, i) => `${i + 1}. ${x}`).join('\n');
 }
 
-function userContent(s, concept, refText, images) {
-    let text = `CONCEPT:\n${concept.trim()}`;
+function userContent(s, name, concept, refText, images) {
+    let text = name ? `CHARACTER NAME: ${name}\n\n` : '';
+    text += `CONCEPT:\n${concept.trim() || '(none, use references)'}`;
     if (refText.trim()) text += `\n\nREFERENCES (treat as canon):\n${refText.trim()}`;
     const useImgs = s.sendImages && images.length > 0;
     if (useImgs) text += '\n\nThe attached images are visual references for appearance and mood.';
@@ -317,20 +344,19 @@ function userContent(s, concept, refText, images) {
     return [{ type: 'text', text }, ...images.map(i => ({ type: 'image_url', image_url: { url: i.url } }))];
 }
 
-function buildGenerateMessages(s, concept, refText, images) {
+function buildGenerateMessages(s, name, concept, refText, images) {
     const secs = enabledSections(s);
     return [
-        { role: 'system', content: `${rules(s, secs)}\n\nSKELETON:\n${skeleton(s, secs)}` },
-        { role: 'user', content: userContent(s, concept, refText, images) },
+        { role: 'system', content: `${rules(s, secs, name)}\n\nSKELETON:\n${skeleton(s, secs)}` },
+        { role: 'user', content: userContent(s, name, concept, refText, images) },
     ];
 }
 
-function buildSectionMessages(s, sec, concept, refText, dossierText, instruction) {
-    const one = skeleton({ ...s, tokenBudget: s.tokenBudget }, [sec]);
-    const sys = `${rules(s, [sec])}\n\nTask: rewrite ONLY the section [${sec.title}] of the existing dossier below. Keep it consistent with the other sections. Output only that one section (header + fields).\n\nSKELETON:\n${one}`;
-    let user = `CURRENT DOSSIER:\n${dossierText}\n\nCONCEPT:\n${concept.trim()}`;
+function buildSectionMessages(s, sec, name, concept, refText, dossierText, instruction) {
+    const sys = `${rules(s, [sec], name)}\n\nTask: write ONLY the section [${sec.title}] for the dossier below. Keep it consistent with the other sections. Output only that one section (header + fields).\n\nSKELETON:\n${skeleton(s, [sec])}`;
+    let user = `CURRENT DOSSIER:\n${dossierText || '(empty)'}\n\n${name ? `CHARACTER NAME: ${name}\n\n` : ''}CONCEPT:\n${concept.trim()}`;
     if (refText.trim()) user += `\n\nREFERENCES:\n${refText.trim()}`;
-    user += instruction.trim() ? `\n\nINSTRUCTION FOR THE [${sec.title}] SECTION: ${instruction.trim()}` : `\n\nCreate a fresh, different take on the [${sec.title}] section.`;
+    user += instruction.trim() ? `\n\nINSTRUCTION FOR THE [${sec.title}] SECTION: ${instruction.trim()}` : `\n\nWrite the [${sec.title}] section${dossierText.includes(`[${sec.title}]`) ? ' as a fresh, different take' : ''}.`;
     return [{ role: 'system', content: sys }, { role: 'user', content: user }];
 }
 
@@ -346,13 +372,39 @@ function buildCompressMessages(s, dossierText) {
     return [{ role: 'system', content: sys }, { role: 'user', content: dossierText }];
 }
 
-/** Разбирает ответ модели в { sectionId: 'строки' }. */
+function buildFirstMessageMessages(s, name, concept, dossierText, scene) {
+    const words = s.firstMesWords;
+    const lang = {
+        auto: 'Write in the same language as the concept text (English if unclear).',
+        en: 'Write in English.',
+        ru: 'Write in Russian.',
+    }[s.firstMesLang] || 'Write in English.';
+    const fmt = s.firstMesFmt === 'plain'
+        ? 'Format: plain prose, no asterisks; spoken lines in "quotes".'
+        : 'Format: narration and actions in *asterisks*, spoken lines in "quotes".';
+    const sys = [
+        'You write the opening message (first message) of a roleplay character card, from the narrator/character side.',
+        'Rules:',
+        `1. HARD LIMIT: at most ${words} words. Aim for about ${Math.round(words * 0.8)}.`,
+        '2. Use {{char}} for the character and {{user}} for the user. Never write {{user}}\'s actions, words, thoughts or feelings.',
+        '3. Narrate in third person, present tense. Show personality through behavior and speech that match the dossier (Speech section, quirks, outfit).',
+        '4. Give a concrete setting and one clear situation; end on a natural hook that invites {{user}} to respond.',
+        `5. ${fmt}`,
+        `6. ${lang}`,
+        '7. Output ONLY the message text: no title, no commentary, no code fences.',
+    ].join('\n');
+    let user = `${name ? `CHARACTER NAME: ${name}\n\n` : ''}${dossierText ? `DOSSIER:\n${dossierText}\n\n` : ''}CONCEPT:\n${concept.trim() || '(see dossier)'}`;
+    user += scene.trim() ? `\n\nSCENE / SITUATION: ${scene.trim()}` : '\n\nChoose a fitting, engaging opening situation.';
+    return [{ role: 'system', content: sys }, { role: 'user', content: user }];
+}
+
+const stripJunk = (text) => String(text).replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/```[a-z]*/gi, '');
+
 function parseDossier(text) {
     const byTitle = new Map(SECTIONS.map(x => [x.title.toLowerCase(), x.id]));
     const out = {};
     let cur = null;
-    const clean = String(text).replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/```[a-z]*/gi, '');
-    for (const raw of clean.split(/\r?\n/)) {
+    for (const raw of stripJunk(text).split(/\r?\n/)) {
         const line = raw.replace(/\s+$/, '');
         const m = line.match(/^\s*\[([^\]]+)\]\s*(?:\(.*\))?\s*$/) || line.match(/^\s*#{1,3}\s*([^()]+?)\s*(?:\(.*\))?\s*$/);
         if (m) {
@@ -364,17 +416,16 @@ function parseDossier(text) {
     return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, v.join('\n')]));
 }
 
-/** Достаёт текст одной секции из ответа на её перегенерацию. */
 function extractSection(text, sec) {
     const p = parseDossier(text);
     if (p[sec.id]) return p[sec.id];
-    return String(text).replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/```[a-z]*/gi, '')
-        .split(/\r?\n/).filter(l => l.trim() && !/^\s*\[.*\]\s*$/.test(l)).join('\n');
+    return stripJunk(text).split(/\r?\n/).filter(l => l.trim() && !/^\s*\[.*\]\s*$/.test(l)).join('\n');
 }
 
-/** Собирает итоговый текст для поля Description. */
-function assemble(s, dossier) {
-    return enabledSections(s)
+/** Итоговый текст для Description. all=true: игнорировать выключенные секции (для библиотеки). */
+function assemble(s, dossier, all = false) {
+    return SECTIONS
+        .filter(sec => all || isOn(s, sec))
         .filter(sec => (dossier[sec.id] || '').trim())
         .map(sec => `[${sec.title}]\n${dossier[sec.id].trim()}`)
         .join('\n');
@@ -385,13 +436,13 @@ function getName(dossier) {
     return m ? m[1].trim() : '';
 }
 
-function toCardV2(name, description) {
+function toCardV2(name, description, firstMes = '') {
     return {
         spec: 'chara_card_v2',
         spec_version: '2.0',
         data: {
             name, description,
-            personality: '', scenario: '', first_mes: '', mes_example: '',
+            personality: '', scenario: '', first_mes: firstMes, mes_example: '',
             creator_notes: 'Created with CharForge', system_prompt: '', post_history_instructions: '',
             alternate_greetings: [], tags: [], creator: 'CharForge', character_version: '1.0',
             extensions: { talkativeness: '0.5', fav: false },
@@ -399,17 +450,14 @@ function toCardV2(name, description) {
     };
 }
 
-/* ═══ src/api.js ═══ */
-// Работа с Таверной: запросы через профиль подключения, токены, создание персонажа.
-const ctx = () => SillyTavern.getContext();
+/* ═══ api ═══ */
+const stctx = () => SillyTavern.getContext();
 
-function listProfiles() {
-    return ctx().extensionSettings?.connectionManager?.profiles ?? [];
-}
+const listProfiles = () => stctx().extensionSettings?.connectionManager?.profiles ?? [];
 
 /** Запрос идёт через профиль Connection Manager: ключи остаются внутри Таверны. */
 async function requestModel(profileId, messages, maxTokens, signal) {
-    const { ConnectionManagerRequestService: Service, extensionSettings } = ctx();
+    const { ConnectionManagerRequestService: Service, extensionSettings } = stctx();
     if (!Service) throw new Error('NO_SERVICE');
     const id = profileId || extensionSettings?.connectionManager?.selectedProfile;
     if (!id) throw new Error('NO_PROFILE');
@@ -422,26 +470,30 @@ async function requestModel(profileId, messages, maxTokens, signal) {
 
 async function countTokens(text) {
     try {
-        const fn = ctx().getTokenCountAsync;
+        const fn = stctx().getTokenCountAsync;
         if (fn) return await fn(text);
     } catch { /* fallthrough */ }
     return Math.ceil(text.length / 3.5);
 }
 
-async function createCharacter(name, description) {
-    const c = ctx();
+async function createCharacter(name, description, firstMes = '', avatarDataUrl = '') {
+    const c = stctx();
     const fd = new FormData();
     fd.append('ch_name', name);
     fd.append('description', description);
     fd.append('personality', '');
     fd.append('scenario', '');
-    fd.append('first_mes', '');
+    fd.append('first_mes', firstMes);
     fd.append('mes_example', '');
     fd.append('creator_notes', 'Created with CharForge');
     fd.append('creator', 'CharForge');
     fd.append('tags', '');
     fd.append('talkativeness', '0.5');
     fd.append('fav', 'false');
+    if (avatarDataUrl) {
+        const blob = await (await fetch(avatarDataUrl)).blob();
+        fd.append('avatar', blob, 'avatar.jpg');
+    }
     const res = await fetch('/api/characters/create', {
         method: 'POST',
         headers: c.getRequestHeaders({ omitContentType: true }),
@@ -450,11 +502,11 @@ async function createCharacter(name, description) {
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const avatar = await res.text();
-    try { await c.getCharacters(); } catch { /* список обновится при следующем открытии */ }
+    try { await c.getCharacters(); } catch { /* список обновится позже */ }
     return avatar;
 }
 
-function shrinkImage(file, max = 768) {
+function shrinkImage(file, max = 768, quality = 0.8) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onerror = reject;
@@ -467,7 +519,7 @@ function shrinkImage(file, max = 768) {
                 cv.width = Math.round(img.width * k);
                 cv.height = Math.round(img.height * k);
                 cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-                resolve(cv.toDataURL('image/jpeg', 0.8));
+                resolve(cv.toDataURL('image/jpeg', quality));
             };
             img.src = reader.result;
         };
@@ -499,11 +551,10 @@ function downloadJson(filename, obj) {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
-/* ═══ src/ui.js ═══ */
-// Окно конструктора и панель настроек.
+/* ═══ ui ═══ */
 const MAX_IMAGES = 4;
 let overlay = null;
-const state = { images: [], busy: false, abort: null, tokenTimer: null };
+const state = { tab: 'create', images: [], busy: false, abort: null, tokenTimer: null };
 
 const qs = (sel) => overlay.querySelector(sel);
 const draft = () => getSettings().draft;
@@ -513,23 +564,34 @@ function el(tag, cls, text) {
     if (text !== undefined) e.textContent = text;
     return e;
 }
+const toast = (type, msg) => window.toastr?.[type]?.(msg);
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
-/* ───────────── Окно ───────────── */
-
-function openWindow() {
+function openWindow(tab) {
     if (!overlay) buildWindow();
+    switchTab(typeof tab === 'string' ? tab : state.tab);
     overlay.classList.add('cf-open');
     document.body.classList.add('cf-lock');
 }
-
-function destroyWindow() {
-    overlay?.remove();
-    overlay = null;
-}
-
+function destroyWindow() { overlay?.remove(); overlay = null; }
 function closeWindow() {
     overlay?.classList.remove('cf-open');
     document.body.classList.remove('cf-lock');
+}
+function initGlobalHandlers() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay?.classList.contains('cf-open')) closeWindow();
+    });
+}
+function applyTheme() { if (overlay) overlay.dataset.theme = getSettings().theme; }
+
+function switchTab(name) {
+    state.tab = name;
+    overlay.querySelectorAll('.cf-tab').forEach(b => b.classList.toggle('cf-active', b.dataset.tab === name));
+    overlay.querySelectorAll('.cf-view').forEach(v => v.classList.toggle('cf-active', v.id === `cf-v-${name}`));
+    if (name === 'library') renderLibrary();
+    if (name === 'settings') buildSettingsView();
+    if (name === 'create') requestAnimationFrame(autosizeAll);
 }
 
 function buildWindow() {
@@ -539,70 +601,142 @@ function buildWindow() {
       <div class="cf-head">
         <div class="cf-title"><i class="fa-solid fa-id-card"></i><span>${t('title')}</span></div>
         <div class="cf-head-actions">
-          <button class="cf-icon-btn" id="cf-clear" data-act title="${t('clearAll')}"><i class="fa-solid fa-trash-can"></i></button>
+          <button class="cf-icon-btn" id="cf-clear" data-act title="${t('clearAll')}"><i class="fa-solid fa-eraser"></i></button>
           <button class="cf-icon-btn" id="cf-close" title="${t('close')}"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
-      <div class="cf-body">
-        <div class="cf-col cf-input">
-          <label class="cf-label" for="cf-concept">${t('concept')}</label>
-          <textarea id="cf-concept" class="cf-ta" rows="8" placeholder="${t('conceptPh')}"></textarea>
-          <label class="cf-label" for="cf-ref">${t('refs')}</label>
-          <textarea id="cf-ref" class="cf-ta" rows="4" placeholder="${t('refsPh')}"></textarea>
-          <div class="cf-images" id="cf-images"></div>
-          <div class="cf-row">
-            <button class="cf-btn" id="cf-add-img" data-act><i class="fa-solid fa-image"></i> ${t('addImage')}</button>
-            <input type="file" id="cf-file" accept="image/*" multiple hidden>
+      <div class="cf-tabs">
+        <button class="cf-tab" data-tab="create"><i class="fa-solid fa-wand-magic-sparkles"></i><span>${t('tabCreate')}</span></button>
+        <button class="cf-tab" data-tab="library"><i class="fa-solid fa-book-bookmark"></i><span>${t('tabLibrary')}</span></button>
+        <button class="cf-tab" data-tab="settings"><i class="fa-solid fa-gear"></i><span>${t('tabSettings')}</span></button>
+      </div>
+
+      <div class="cf-view" id="cf-v-create">
+        <div class="cf-body">
+          <div class="cf-col cf-input">
+            <label class="cf-label" for="cf-name">${t('name')}</label>
+            <input id="cf-name" class="cf-input-line" type="text" autocomplete="off">
+            <label class="cf-label" for="cf-concept">${t('concept')}</label>
+            <textarea id="cf-concept" class="cf-ta" rows="7"></textarea>
+            <label class="cf-label" for="cf-ref">${t('refs')}</label>
+            <textarea id="cf-ref" class="cf-ta" rows="3"></textarea>
+            <div class="cf-images" id="cf-images"></div>
+            <div class="cf-row">
+              <button class="cf-btn" id="cf-add-img" data-act><i class="fa-solid fa-image"></i> ${t('addImage')}</button>
+              <input type="file" id="cf-file" accept="image/*" multiple hidden>
+            </div>
+            <div class="cf-note" id="cf-imgnote"></div>
+            <div class="cf-label">${t('avatar')}</div>
+            <div class="cf-avatar-row">
+              <div class="cf-avatar" id="cf-avatar"></div>
+              <div class="cf-avatar-side">
+                <div class="cf-row">
+                  <button class="cf-btn cf-small" id="cf-pick-avatar" data-act><i class="fa-solid fa-user-circle"></i> ${t('avatarPick')}</button>
+                  <button class="cf-btn cf-small" id="cf-rm-avatar" data-act>${t('avatarRemove')}</button>
+                  <input type="file" id="cf-avatar-file" accept="image/*" hidden>
+                </div>
+                <label class="cf-check"><input type="checkbox" id="cf-avatar-ref"><span>${t('avatarAsRef')}</span></label>
+              </div>
+            </div>
+            <div class="cf-row">
+              <button class="cf-btn cf-primary" id="cf-gen" data-act><i class="fa-solid fa-wand-magic-sparkles"></i> ${t('generate')}</button>
+              <button class="cf-btn cf-danger" id="cf-cancel" hidden>${t('cancel')}</button>
+            </div>
+            <div class="cf-status" id="cf-status"></div>
           </div>
-          <div class="cf-note" id="cf-imgnote"></div>
-          <div class="cf-row">
-            <button class="cf-btn cf-primary" id="cf-gen" data-act><i class="fa-solid fa-wand-magic-sparkles"></i> ${t('generate')}</button>
-            <button class="cf-btn cf-danger" id="cf-cancel" hidden>${t('cancel')}</button>
+
+          <div class="cf-col cf-output">
+            <div class="cf-meter"><span id="cf-tokens"></span><div class="cf-bar"><div id="cf-bar-fill"></div></div></div>
+            <div id="cf-sections"></div>
+            <div class="cf-empty" id="cf-empty">${t('empty')}</div>
+            <div class="cf-card" id="cf-first">
+              <div class="cf-card-title">${t('firstMes')}</div>
+              <input id="cf-scene" class="cf-input-line" type="text" autocomplete="off">
+              <textarea id="cf-firstmes" class="cf-ta cf-ta-first" rows="5"></textarea>
+              <div class="cf-row cf-between">
+                <span id="cf-words" class="cf-note"></span>
+                <button class="cf-btn cf-small" id="cf-genfirst" data-act></button>
+              </div>
+            </div>
           </div>
-          <div class="cf-status" id="cf-status"></div>
         </div>
-        <div class="cf-col cf-output">
-          <div class="cf-meter">
-            <span id="cf-tokens"></span>
-            <div class="cf-bar"><div id="cf-bar-fill"></div></div>
-          </div>
-          <div id="cf-sections"></div>
-          <div class="cf-empty" id="cf-empty">${t('empty')}</div>
+        <div class="cf-foot">
+          <button class="cf-btn" id="cf-compress" data-act><i class="fa-solid fa-compress"></i> ${t('compress')}</button>
+          <button class="cf-btn" id="cf-copy" data-act><i class="fa-solid fa-copy"></i> ${t('copy')}</button>
+          <button class="cf-btn" id="cf-save" data-act><i class="fa-solid fa-book-bookmark"></i> ${t('save')}</button>
+          <button class="cf-btn" id="cf-export" data-act><i class="fa-solid fa-file-export"></i> ${t('exportJson')}</button>
+          <button class="cf-btn cf-primary" id="cf-create" data-act><i class="fa-solid fa-user-plus"></i> ${t('createChar')}</button>
         </div>
       </div>
-      <div class="cf-foot">
-        <button class="cf-btn" id="cf-compress" data-act><i class="fa-solid fa-compress"></i> ${t('compress')}</button>
-        <button class="cf-btn" id="cf-copy" data-act><i class="fa-solid fa-copy"></i> ${t('copy')}</button>
-        <button class="cf-btn" id="cf-export" data-act><i class="fa-solid fa-file-export"></i> ${t('exportJson')}</button>
-        <button class="cf-btn cf-primary" id="cf-create" data-act><i class="fa-solid fa-user-plus"></i> ${t('createChar')}</button>
+
+      <div class="cf-view" id="cf-v-library">
+        <div class="cf-lib-bar">
+          <input id="cf-lib-q" class="cf-input-line" type="search" autocomplete="off">
+          <span id="cf-lib-count" class="cf-note"></span>
+        </div>
+        <div class="cf-lib-grid" id="cf-lib-grid"></div>
+        <div class="cf-note cf-lib-note">${t('libNote')}</div>
       </div>
+
+      <div class="cf-view" id="cf-v-settings"><div class="cf-settings-body" id="cf-settings-body"></div></div>
     </div>`;
     document.body.appendChild(overlay);
+    applyTheme();
 
-    const s = getSettings();
-    qs('#cf-concept').value = s.draft.concept;
-    qs('#cf-ref').value = s.draft.refText;
-    qs('#cf-imgnote').textContent = s.sendImages ? t('imgNote') : t('imgNoteOff');
+    // плейсхолдеры через JS: в тексте бывают кавычки
+    qs('#cf-name').placeholder = t('namePh');
+    qs('#cf-concept').placeholder = t('conceptPh');
+    qs('#cf-ref').placeholder = t('refsPh');
+    qs('#cf-scene').placeholder = t('scenePh');
+    qs('#cf-firstmes').placeholder = t('firstPh');
+    qs('#cf-lib-q').placeholder = t('libSearch');
 
+    overlay.querySelectorAll('.cf-tab').forEach(b => { b.onclick = () => switchTab(b.dataset.tab); });
     qs('#cf-close').onclick = closeWindow;
     overlay.addEventListener('mousedown', (e) => { if (e.target === overlay) closeWindow(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay?.classList.contains('cf-open')) closeWindow(); });
 
+    qs('#cf-name').oninput = (e) => { draft().name = e.target.value; saveSettings(); };
     qs('#cf-concept').oninput = (e) => { draft().concept = e.target.value; saveSettings(); };
     qs('#cf-ref').oninput = (e) => { draft().refText = e.target.value; saveSettings(); };
+    qs('#cf-scene').oninput = (e) => { draft().scene = e.target.value; saveSettings(); };
+    qs('#cf-firstmes').oninput = (e) => { draft().firstMes = e.target.value; autosize(e.target); updateFirstUI(); saveSettings(); };
+    qs('#cf-avatar-ref').onchange = (e) => { draft().avatarAsRef = e.target.checked; saveSettings(); };
+    qs('#cf-lib-q').oninput = renderLibrary;
 
     qs('#cf-add-img').onclick = () => qs('#cf-file').click();
     qs('#cf-file').onchange = onPickImages;
+    qs('#cf-pick-avatar').onclick = () => qs('#cf-avatar-file').click();
+    qs('#cf-avatar-file').onchange = onPickAvatar;
+    qs('#cf-rm-avatar').onclick = () => { draft().avatar = ''; saveSettings(); renderAvatar(); };
+
     qs('#cf-gen').onclick = doGenerate;
     qs('#cf-cancel').onclick = () => state.abort?.abort();
+    qs('#cf-genfirst').onclick = doFirst;
     qs('#cf-compress').onclick = doCompress;
     qs('#cf-copy').onclick = doCopy;
+    qs('#cf-save').onclick = doSave;
     qs('#cf-export').onclick = doExport;
     qs('#cf-create').onclick = doCreate;
     qs('#cf-clear').onclick = doClear;
 
+    fillInputs();
+}
+
+/** Заполняет поля редактора из черновика. */
+function fillInputs() {
+    const s = getSettings(), d = s.draft;
+    qs('#cf-name').value = d.name;
+    qs('#cf-concept').value = d.concept;
+    qs('#cf-ref').value = d.refText;
+    qs('#cf-scene').value = d.scene;
+    qs('#cf-firstmes').value = d.firstMes;
+    qs('#cf-avatar-ref').checked = !!d.avatarAsRef;
+    qs('#cf-imgnote').textContent = s.sendImages ? t('imgNote') : t('imgNoteOff');
+    renderAvatar();
     renderImages();
     renderSections();
+    updateFirstUI();
+    setStatus('');
 }
 
 /* ───────────── Состояние ───────────── */
@@ -613,13 +747,11 @@ function setBusy(on, msg = '') {
     qs('#cf-cancel').hidden = !on;
     setStatus(msg);
 }
-
 function setStatus(msg, isErr = false) {
     const st = qs('#cf-status');
     st.textContent = msg;
     st.classList.toggle('cf-err', isErr);
 }
-
 function errText(e) {
     if (e?.name === 'AbortError') return t('cancelled');
     const m = String(e?.message || e);
@@ -627,35 +759,37 @@ function errText(e) {
     if (m === 'NO_SERVICE') return t('errNoService');
     return t('errFailed', { msg: m });
 }
-
+/** fn может вернуть строку-предупреждение: она покажется вместо «Готово». */
 async function run(label, fn) {
     if (state.busy) return;
     state.abort = new AbortController();
     setBusy(true, label);
+    let msg = t('done'), isErr = false;
     try {
-        await fn(state.abort.signal);
-        setStatus(t('done'));
+        const warn = await fn(state.abort.signal);
+        if (warn) { msg = warn; isErr = true; }
     } catch (e) {
         console.error('[CharForge]', e);
-        setStatus(errText(e), true);
+        msg = errText(e);
+        isErr = true;
     } finally {
-        setBusy(false, qs('#cf-status').textContent);
+        setBusy(false);
+        setStatus(msg, isErr);
         state.abort = null;
     }
 }
 
-/* ───────────── Картинки ───────────── */
+/* ───────────── Картинки и аватар ───────────── */
 
 async function onPickImages(e) {
     const files = [...e.target.files];
     e.target.value = '';
     for (const f of files) {
         if (state.images.length >= MAX_IMAGES) break;
-        try { state.images.push({ name: f.name, url: await shrinkImage(f) }); } catch (err) { console.warn(err); }
+        try { state.images.push({ name: f.name, url: await shrinkImage(f, 768, 0.8) }); } catch (err) { console.warn(err); }
     }
     renderImages();
 }
-
 function renderImages() {
     const box = qs('#cf-images');
     box.innerHTML = '';
@@ -670,51 +804,99 @@ function renderImages() {
         box.appendChild(w);
     });
 }
+async function onPickAvatar(e) {
+    const f = e.target.files[0];
+    e.target.value = '';
+    if (!f) return;
+    try {
+        draft().avatar = await shrinkImage(f, 512, 0.85);
+        saveSettings();
+        renderAvatar();
+    } catch (err) { console.warn(err); }
+}
+function renderAvatar() {
+    const box = qs('#cf-avatar');
+    box.innerHTML = '';
+    const a = draft().avatar;
+    if (a) {
+        const im = document.createElement('img');
+        im.src = a;
+        box.appendChild(im);
+    } else {
+        box.innerHTML = '<i class="fa-solid fa-user"></i>';
+    }
+}
+/** Картинки для модели: референсы + (по желанию) аватар. */
+function modelImages() {
+    const d = draft();
+    const list = [...state.images];
+    if (d.avatarAsRef && d.avatar) list.push({ name: 'avatar', url: d.avatar });
+    return list;
+}
 
 /* ───────────── Генерация ───────────── */
 
-function collect() {
-    const s = getSettings();
-    return { s, concept: qs('#cf-concept').value, refText: qs('#cf-ref').value };
-}
-
 function doGenerate() {
-    const { s, concept, refText } = collect();
-    if (!concept.trim() && !refText.trim() && !state.images.length) { setStatus(t('errEmpty'), true); return; }
+    const s = getSettings(), d = s.draft;
+    const imgs = modelImages();
+    if (!d.concept.trim() && !d.refText.trim() && !imgs.length) { setStatus(t('errEmpty'), true); return; }
     return run(t('generating'), async (signal) => {
-        const msgs = buildGenerateMessages(s, concept || '(see references)', refText, state.images);
+        const msgs = buildGenerateMessages(s, d.name.trim(), d.concept, d.refText, imgs);
         const text = await requestModel(s.profileId, msgs, s.maxResponse, signal);
         const parsed = parseDossier(text);
         if (!Object.keys(parsed).length) throw new Error(t('errParse'));
-        s.draft.dossier = parsed;
+        d.dossier = parsed;
+        if (!d.name.trim()) {
+            const n = getName(parsed);
+            if (n) { d.name = n; qs('#cf-name').value = n; }
+        }
         saveSettings();
         renderSections();
+        const missing = enabledSections(s).filter(x => !parsed[x.id]).map(x => t(`sec.${x.id}`));
+        return missing.length ? t('errMissing', { list: missing.join(', ') }) : '';
     });
 }
 
 function doSection(sec, instruction) {
-    const { s, concept, refText } = collect();
+    const s = getSettings(), d = s.draft;
     return run(t('regenerating'), async (signal) => {
-        const current = assemble(s, s.draft.dossier);
-        const msgs = buildSectionMessages(s, sec, concept, refText, current, instruction);
+        const name = d.name.trim() || getName(d.dossier);
+        const msgs = buildSectionMessages(s, sec, name, d.concept, d.refText, assemble(s, d.dossier), instruction);
         const text = await requestModel(s.profileId, msgs, Math.min(s.maxResponse, 1500), signal);
         const body = extractSection(text, sec);
         if (!body.trim()) throw new Error(t('errParse'));
-        s.draft.dossier[sec.id] = body;
+        d.dossier[sec.id] = body;
         saveSettings();
         renderSections();
     });
 }
 
+function doFirst() {
+    const s = getSettings(), d = s.draft;
+    if (!d.concept.trim() && !Object.keys(d.dossier).length) { setStatus(t('errEmpty'), true); return; }
+    return run(t('genFirstBusy'), async (signal) => {
+        const name = d.name.trim() || getName(d.dossier);
+        const msgs = buildFirstMessageMessages(s, name, d.concept, assemble(s, d.dossier), d.scene);
+        const text = await requestModel(s.profileId, msgs, s.maxResponse, signal);
+        const msg = stripJunk(text).trim();
+        if (!msg) throw new Error(t('errParse'));
+        d.firstMes = msg;
+        saveSettings();
+        qs('#cf-firstmes').value = msg;
+        autosize(qs('#cf-firstmes'));
+        updateFirstUI();
+    });
+}
+
 function doCompress() {
-    const { s } = collect();
-    const current = assemble(s, s.draft.dossier);
+    const s = getSettings(), d = s.draft;
+    const current = assemble(s, d.dossier);
     if (!current) { setStatus(t('errNoDossier'), true); return; }
     return run(t('compressing'), async (signal) => {
         const text = await requestModel(s.profileId, buildCompressMessages(s, current), s.maxResponse, signal);
         const parsed = parseDossier(text);
         if (!Object.keys(parsed).length) throw new Error(t('errParse'));
-        s.draft.dossier = { ...s.draft.dossier, ...parsed };
+        Object.assign(d.dossier, parsed);
         saveSettings();
         renderSections();
     });
@@ -723,40 +905,45 @@ function doCompress() {
 /* ───────────── Вывод анкеты ───────────── */
 
 function autosize(ta) {
+    if (!ta || !ta.scrollHeight) return;
     ta.style.height = 'auto';
     ta.style.height = `${ta.scrollHeight + 2}px`;
 }
+function autosizeAll() { overlay?.querySelectorAll('.cf-ta-sec,.cf-ta-first').forEach(autosize); }
 
 function renderSections() {
     const s = getSettings();
     const box = qs('#cf-sections');
     box.innerHTML = '';
-    const secs = enabledSections(s).filter(x => s.draft.dossier[x.id] !== undefined);
-    qs('#cf-empty').hidden = secs.length > 0;
-    for (const sec of secs) {
-        const card = el('div', 'cf-card');
-        card.appendChild(el('div', 'cf-card-title', t(`sec.${sec.id}`)));
-        const ta = el('textarea', 'cf-ta cf-ta-sec');
-        ta.value = s.draft.dossier[sec.id] || '';
-        ta.oninput = () => {
-            s.draft.dossier[sec.id] = ta.value;
-            autosize(ta);
-            saveSettings();
-            scheduleTokens();
-        };
-        card.appendChild(ta);
-        const row = el('div', 'cf-row cf-sec-row');
-        const inp = el('input', 'cf-input-line');
-        inp.type = 'text';
-        inp.placeholder = t('secWish');
-        const btn = el('button', 'cf-btn cf-small');
-        btn.dataset.act = '';
-        btn.innerHTML = `<i class="fa-solid fa-rotate"></i> ${t('secRegen')}`;
-        btn.onclick = () => doSection(sec, inp.value);
-        row.append(inp, btn);
-        card.appendChild(row);
-        box.appendChild(card);
-        requestAnimationFrame(() => autosize(ta));
+    const has = Object.keys(s.draft.dossier).length > 0;
+    qs('#cf-empty').hidden = has;
+    if (has) {
+        for (const sec of enabledSections(s)) {
+            const card = el('div', 'cf-card');
+            card.appendChild(el('div', 'cf-card-title', t(`sec.${sec.id}`)));
+            const ta = el('textarea', 'cf-ta cf-ta-sec');
+            ta.value = s.draft.dossier[sec.id] || '';
+            ta.oninput = () => {
+                draft().dossier[sec.id] = ta.value;
+                autosize(ta);
+                saveSettings();
+                scheduleTokens();
+            };
+            card.appendChild(ta);
+            const row = el('div', 'cf-row cf-sec-row');
+            const inp = el('input', 'cf-input-line');
+            inp.type = 'text';
+            inp.placeholder = t('secWish');
+            const btn = el('button', 'cf-btn cf-small');
+            btn.dataset.act = '';
+            const filled = !!(s.draft.dossier[sec.id] || '').trim();
+            btn.innerHTML = `<i class="fa-solid ${filled ? 'fa-rotate' : 'fa-wand-magic-sparkles'}"></i> ${filled ? t('secRegen') : t('secGen')}`;
+            btn.onclick = () => doSection(sec, inp.value);
+            row.append(inp, btn);
+            card.appendChild(row);
+            box.appendChild(card);
+            requestAnimationFrame(() => autosize(ta));
+        }
     }
     updateTokens();
 }
@@ -765,12 +952,12 @@ function scheduleTokens() {
     clearTimeout(state.tokenTimer);
     state.tokenTimer = setTimeout(updateTokens, 300);
 }
-
 async function updateTokens() {
     if (!overlay) return;
     const s = getSettings();
     const text = assemble(s, s.draft.dossier);
     const n = text ? await countTokens(text) : 0;
+    if (!overlay) return;
     const lbl = qs('#cf-tokens');
     lbl.textContent = t('tokens', { n, max: s.tokenBudget });
     const fill = qs('#cf-bar-fill');
@@ -780,7 +967,17 @@ async function updateTokens() {
     lbl.classList.toggle('cf-over-text', over);
 }
 
-/* ───────────── Действия ───────────── */
+function updateFirstUI() {
+    const s = getSettings(), d = s.draft;
+    const n = countWords(d.firstMes);
+    const w = qs('#cf-words');
+    w.textContent = t('words', { n, max: s.firstMesWords });
+    w.classList.toggle('cf-over-text', n > s.firstMesWords);
+    qs('#cf-genfirst').innerHTML = `<i class="fa-solid fa-feather-pointed"></i> ${d.firstMes.trim() ? t('regenFirst') : t('genFirst')}`;
+    requestAnimationFrame(() => autosize(qs('#cf-firstmes')));
+}
+
+/* ───────────── Действия редактора ───────────── */
 
 async function doCopy() {
     const s = getSettings();
@@ -790,57 +987,284 @@ async function doCopy() {
     setStatus(t('copied'));
 }
 
-function resolveName(s) {
-    let name = getName(s.draft.dossier);
+function resolveName() {
+    const d = draft();
+    let name = d.name.trim() || getName(d.dossier);
     if (!name) name = (window.prompt(t('namePrompt')) || '').trim();
+    if (name && !d.name.trim()) { d.name = name; qs('#cf-name').value = name; saveSettings(); }
     return name;
 }
 
 function doExport() {
-    const s = getSettings();
-    const text = assemble(s, s.draft.dossier);
+    const s = getSettings(), d = s.draft;
+    const text = assemble(s, d.dossier);
     if (!text) { setStatus(t('errNoDossier'), true); return; }
-    const name = resolveName(s);
+    const name = resolveName();
     if (!name) return;
-    downloadJson(`${name.replace(/[^\w\-]+/g, '_')}.json`, toCardV2(name, text));
+    downloadJson(`${name.replace(/[^\w\-]+/g, '_')}.json`, toCardV2(name, text, d.firstMes));
 }
 
 async function doCreate() {
-    const s = getSettings();
-    const text = assemble(s, s.draft.dossier);
+    const s = getSettings(), d = s.draft;
+    const text = assemble(s, d.dossier);
     if (!text) { setStatus(t('errNoDossier'), true); return; }
-    const name = resolveName(s);
+    const name = resolveName();
     if (!name) return;
+    await createInST(name, text, d.firstMes, d.avatar, true);
+}
+
+async function createInST(name, text, firstMes, avatar, report) {
     try {
-        await createCharacter(name, text);
+        await createCharacter(name, text, firstMes, avatar);
         const msg = t('created', { name });
-        setStatus(msg);
-        window.toastr?.success(msg);
+        if (report && overlay) setStatus(msg);
+        toast('success', msg);
     } catch (e) {
         console.error('[CharForge]', e);
         const msg = t('errCreate', { msg: e.message });
-        setStatus(msg, true);
-        window.toastr?.error(msg);
+        if (report && overlay) setStatus(msg, true);
+        toast('error', msg);
     }
+}
+
+async function doSave() {
+    const s = getSettings(), d = s.draft;
+    const text = assemble(s, d.dossier);
+    if (!text) { setStatus(t('errNoDossier'), true); return; }
+    const name = resolveName();
+    if (!name) return;
+    const data = {
+        name, dossier: structuredClone(d.dossier), firstMes: d.firstMes, scene: d.scene,
+        concept: d.concept, refText: d.refText, avatar: d.avatar,
+        tokens: await countTokens(text), updated: Date.now(),
+    };
+    let entry = s.library.find(x => x.id === d.libraryId);
+    if (entry) Object.assign(entry, data);
+    else {
+        entry = { id: newId(), ...data };
+        s.library.unshift(entry);
+        d.libraryId = entry.id;
+    }
+    saveSettings();
+    setStatus(t('saved'));
+    toast('success', t('saved'));
 }
 
 function doClear() {
     if (!window.confirm(t('clearConfirm'))) return;
     const s = getSettings();
-    s.draft = structuredClone(DEFAULTS.draft);
+    s.draft = structuredClone(DEFAULT_DRAFT);
     state.images = [];
     saveSettings();
-    qs('#cf-concept').value = '';
-    qs('#cf-ref').value = '';
-    renderImages();
-    renderSections();
-    setStatus('');
+    fillInputs();
 }
 
-/* ───────────── Панель настроек ───────────── */
+/* ───────────── Библиотека ───────────── */
 
-function mountSettings() {
+function iconBtn(icon, title, fn, cls = '') {
+    const b = el('button', `cf-icon-btn cf-lib-btn ${cls}`);
+    b.title = title;
+    b.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+    b.onclick = fn;
+    return b;
+}
+
+function renderLibrary() {
+    if (!overlay) return;
     const s = getSettings();
+    const q = qs('#cf-lib-q').value.trim().toLowerCase();
+    const grid = qs('#cf-lib-grid');
+    grid.innerHTML = '';
+    const list = s.library.filter(e => !q ||
+        `${e.name} ${e.concept || ''} ${Object.values(e.dossier || {}).join(' ')}`.toLowerCase().includes(q));
+    qs('#cf-lib-count').textContent = `${list.length}/${s.library.length}`;
+    if (!list.length) {
+        grid.appendChild(el('div', 'cf-empty', s.library.length ? t('libNone') : t('libEmpty')));
+        return;
+    }
+    for (const e of list) grid.appendChild(libCard(s, e));
+}
+
+function libCard(s, e) {
+    const card = el('div', 'cf-lib-card');
+    const th = el('div', 'cf-lib-thumb');
+    if (e.avatar) {
+        const im = document.createElement('img');
+        im.src = e.avatar;
+        th.appendChild(im);
+    } else th.innerHTML = '<i class="fa-solid fa-user"></i>';
+
+    const info = el('div', 'cf-lib-info');
+    info.appendChild(el('div', 'cf-lib-name', e.name || t('untitled')));
+    const date = new Date(e.updated || Date.now()).toLocaleDateString(LANG === 'ru' ? 'ru-RU' : 'en-GB');
+    info.appendChild(el('div', 'cf-note', `${e.tokens || 0} ${t('tokShort')} · ${date}`));
+    const snippet = (e.concept || assemble(s, e.dossier || {}, true)).replace(/\s+/g, ' ').slice(0, 110);
+    info.appendChild(el('div', 'cf-lib-snippet', snippet));
+
+    const acts = el('div', 'cf-lib-actions');
+    acts.append(
+        iconBtn('fa-pen-to-square', t('libEdit'), () => loadFromLibrary(e)),
+        iconBtn('fa-user-plus', t('libToST'), () => createInST(e.name, assemble(s, e.dossier || {}, true), e.firstMes || '', e.avatar || '', false)),
+        iconBtn('fa-file-export', t('libJson'), () => downloadJson(`${(e.name || 'character').replace(/[^\w\-]+/g, '_')}.json`, toCardV2(e.name, assemble(s, e.dossier || {}, true), e.firstMes || ''))),
+        iconBtn('fa-trash-can', t('libDelete'), () => deleteFromLibrary(e), 'cf-danger-text'),
+    );
+    card.append(th, info, acts);
+    return card;
+}
+
+function loadFromLibrary(e) {
+    const s = getSettings(), d = s.draft;
+    const hasContent = d.concept.trim() || Object.keys(d.dossier).length;
+    if (hasContent && d.libraryId !== e.id && !window.confirm(t('libLoadConfirm'))) return;
+    s.draft = {
+        ...structuredClone(DEFAULT_DRAFT),
+        name: e.name || '', concept: e.concept || '', refText: e.refText || '',
+        dossier: structuredClone(e.dossier || {}), firstMes: e.firstMes || '', scene: e.scene || '',
+        avatar: e.avatar || '', libraryId: e.id,
+    };
+    state.images = [];
+    saveSettings();
+    fillInputs();
+    switchTab('create');
+}
+
+function deleteFromLibrary(e) {
+    if (!window.confirm(t('libDeleteConfirm', { name: e.name || t('untitled') }))) return;
+    const s = getSettings();
+    s.library = s.library.filter(x => x.id !== e.id);
+    if (s.draft.libraryId === e.id) s.draft.libraryId = '';
+    saveSettings();
+    renderLibrary();
+}
+
+/* ───────────── Вкладка «Настройки» ───────────── */
+
+const thKey = (id) => `th${id[0].toUpperCase()}${id.slice(1)}`;
+
+function buildSettingsView() {
+    const s = getSettings();
+    const box = qs('#cf-settings-body');
+    box.innerHTML = '';
+
+    const group = (title) => {
+        const g = el('div', 'cf-group');
+        g.appendChild(el('div', 'cf-group-title', title));
+        box.appendChild(g);
+        return g;
+    };
+    const field = (g, label, ctrl, hint) => {
+        const w = el('div', 'cf-field');
+        w.appendChild(el('span', 'cf-field-label', label));
+        w.appendChild(ctrl);
+        if (hint) w.appendChild(el('small', 'cf-note', hint));
+        g.appendChild(w);
+        return w;
+    };
+    const select = (key, opts, after) => {
+        const sel = el('select', 'cf-select');
+        for (const [v, l] of opts) { const o = el('option', '', l); o.value = v; sel.appendChild(o); }
+        sel.value = s[key];
+        sel.onchange = () => { s[key] = sel.value; saveSettings(); after?.(sel.value); };
+        return sel;
+    };
+    const number = (key, min, max, step, after) => {
+        const i = el('input', 'cf-input-line');
+        i.type = 'number'; i.min = min; i.max = max; i.step = step;
+        i.value = s[key];
+        i.onchange = () => {
+            const v = Math.min(max, Math.max(min, parseInt(i.value, 10) || DEFAULTS[key]));
+            i.value = v; s[key] = v; saveSettings(); after?.(v);
+        };
+        return i;
+    };
+    const check = (label, get, set) => {
+        const w = el('label', 'cf-check');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = get();
+        cb.onchange = () => { set(cb.checked); saveSettings(); };
+        w.append(cb, el('span', '', label));
+        return w;
+    };
+
+    // Основное
+    let g = group(t('gGeneral'));
+    field(g, t('sLang'), select('lang', [['ru', 'Русский'], ['en', 'English']], (v) => {
+        setLang(v);
+        destroyWindow();
+        openWindow('settings');
+        document.dispatchEvent(new CustomEvent('cf-lang'));
+    }));
+    const profOpts = [['', t('sProfileCur')], ...listProfiles().map(p => [p.id, p.name])];
+    if (s.profileId && !profOpts.some(o => o[0] === s.profileId)) s.profileId = '';
+    field(g, t('sProfile'), select('profileId', profOpts), t('sProfileNote'));
+
+    // Тема
+    g = group(t('gTheme'));
+    const sw = el('div', 'cf-swatches');
+    for (const th of THEMES) {
+        const b = el('button', 'cf-swatch');
+        b.type = 'button';
+        b.style.setProperty('--sw-bg', th.bg);
+        b.style.setProperty('--sw-ac', th.ac);
+        if (th.id === 'auto') b.classList.add('cf-sw-auto');
+        b.classList.toggle('cf-active', s.theme === th.id);
+        b.append(el('span', 'cf-sw-dot'), el('span', 'cf-sw-name', t(thKey(th.id))));
+        b.onclick = () => {
+            s.theme = th.id;
+            saveSettings();
+            applyTheme();
+            sw.querySelectorAll('.cf-swatch').forEach(x => x.classList.toggle('cf-active', x === b));
+        };
+        sw.appendChild(b);
+    }
+    g.appendChild(sw);
+    g.appendChild(el('small', 'cf-note', t('thAutoH')));
+
+    // Генерация
+    g = group(t('gGen'));
+    const hints = { strict: t('cStrictH'), balanced: t('cBalancedH'), free: t('cFreeH') };
+    const cHint = el('small', 'cf-note', hints[s.creativity]);
+    const cWrap = field(g, t('sCreativity'), select('creativity',
+        [['strict', t('cStrict')], ['balanced', t('cBalanced')], ['free', t('cFree')]],
+        (v) => { cHint.textContent = hints[v]; }));
+    cWrap.appendChild(cHint);
+    g.appendChild(check(t('sPeople'), () => s.inventPeople, (v) => { s.inventPeople = v; }));
+    g.appendChild(check(t('sImages'), () => s.sendImages, (v) => {
+        s.sendImages = v;
+        qs('#cf-imgnote').textContent = v ? t('imgNote') : t('imgNoteOff');
+    }));
+    const grid = el('div', 'cf-s-grid');
+    field(grid, t('sBudget'), number('tokenBudget', 300, 4000, 50, updateTokens));
+    field(grid, t('sMax'), number('maxResponse', 500, 16000, 100));
+    field(grid, t('sExamples'), number('examples', 1, 10, 1));
+    g.appendChild(grid);
+
+    // Первое сообщение
+    g = group(t('gFirst'));
+    const grid2 = el('div', 'cf-s-grid');
+    field(grid2, t('sFirstWords'), number('firstMesWords', 50, 400, 10, updateFirstUI));
+    field(grid2, t('sFirstLang'), select('firstMesLang', [['auto', t('lAuto')], ['en', t('lEn')], ['ru', t('lRu')]]));
+    field(grid2, t('sFirstFmt'), select('firstMesFmt', [['asterisks', t('fAst')], ['plain', t('fPlain')]]));
+    g.appendChild(grid2);
+
+    // Секции
+    g = group(t('gSections'));
+    const sg = el('div', 'cf-s-sections');
+    for (const sec of SECTIONS) {
+        const lbl = check(t(`sec.${sec.id}`), () => isOn(s, sec), (v) => {
+            s.sections[sec.id] = v;
+            renderSections();
+        });
+        if (sec.id === 'basic') lbl.querySelector('input').disabled = true;
+        sg.appendChild(lbl);
+    }
+    g.appendChild(sg);
+    g.appendChild(el('small', 'cf-note', t('sBasicNote')));
+}
+
+/* Панель в Extensions: только кнопка открытия */
+function mountSettings() {
     document.getElementById('cf_settings')?.remove();
     const root = el('div');
     root.id = 'cf_settings';
@@ -850,136 +1274,15 @@ function mountSettings() {
         <b>CharForge — ${t('title')}</b>
         <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
       </div>
-      <div class="inline-drawer-content cf-settings">
+      <div class="inline-drawer-content">
         <button class="menu_button" id="cf_s_open"><i class="fa-solid fa-id-card"></i> ${t('sOpen')}</button>
-
-        <label>${t('sLang')}
-          <select id="cf_s_lang" class="text_pole">
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
-          </select>
-        </label>
-
-        <label>${t('sProfile')}
-          <select id="cf_s_profile" class="text_pole"></select>
-        </label>
-        <small class="cf-hint">${t('sProfileNote')}</small>
-
-        <div class="cf-s-grid">
-          <label>${t('sBudget')}<input id="cf_s_budget" type="number" class="text_pole" min="300" max="4000" step="50"></label>
-          <label>${t('sMax')}<input id="cf_s_max" type="number" class="text_pole" min="500" max="16000" step="100"></label>
-          <label>${t('sExamples')}<input id="cf_s_examples" type="number" class="text_pole" min="1" max="10"></label>
-        </div>
-
-        <label class="checkbox_label"><input id="cf_s_images" type="checkbox"><span>${t('sImages')}</span></label>
-
-        <b>${t('sSections')}</b>
-        <div id="cf_s_sections" class="cf-s-sections"></div>
-        <small class="cf-hint">${t('sBasicNote')}</small>
-
-        <b>${t('sColors')}</b>
-        <div class="cf-s-colors">
-          <label>${t('sAccent')}<input type="color" data-color="accent"></label>
-          <label>${t('sBg')}<input type="color" data-color="bg"></label>
-          <label>${t('sPanel')}<input type="color" data-color="panel"></label>
-          <label>${t('sText')}<input type="color" data-color="text"></label>
-        </div>
-        <button class="menu_button" id="cf_s_reset">${t('sReset')}</button>
       </div>
     </div>`;
     (document.getElementById('extensions_settings2') || document.getElementById('extensions_settings')).appendChild(root);
-
-    const q = (sel) => root.querySelector(sel);
-
-    // язык
-    const lang = q('#cf_s_lang');
-    lang.value = s.lang;
-    lang.onchange = () => {
-        s.lang = lang.value;
-        setLang(s.lang);
-        saveSettings();
-        destroyWindow();
-        mountSettings();
-        document.dispatchEvent(new CustomEvent('cf-lang'));
-    };
-
-    // профили (только имена и id, ключи недоступны)
-    const sel = q('#cf_s_profile');
-    const cur = document.createElement('option');
-    cur.value = '';
-    cur.textContent = t('sProfileCur');
-    sel.appendChild(cur);
-    for (const p of listProfiles()) {
-        const o = document.createElement('option');
-        o.value = p.id;
-        o.textContent = p.name;
-        sel.appendChild(o);
-    }
-    sel.value = [...sel.options].some(o => o.value === s.profileId) ? s.profileId : '';
-    sel.onchange = () => { s.profileId = sel.value; saveSettings(); };
-    sel.onfocus = () => {
-        // подтягиваем актуальный список профилей при открытии
-        const known = new Set([...sel.options].map(o => o.value));
-        for (const p of listProfiles()) {
-            if (known.has(p.id)) continue;
-            const o = document.createElement('option');
-            o.value = p.id;
-            o.textContent = p.name;
-            sel.appendChild(o);
-        }
-    };
-
-    // числа
-    const num = (id, key, min, max) => {
-        const i = q(id);
-        i.value = s[key];
-        i.onchange = () => {
-            const v = Math.min(max, Math.max(min, parseInt(i.value, 10) || DEFAULTS[key]));
-            i.value = v;
-            s[key] = v;
-            saveSettings();
-            destroyWindow(); // перестроить окно с новым лимитом
-        };
-    };
-    num('#cf_s_budget', 'tokenBudget', 300, 4000);
-    num('#cf_s_max', 'maxResponse', 500, 16000);
-    num('#cf_s_examples', 'examples', 1, 10);
-
-    const img = q('#cf_s_images');
-    img.checked = s.sendImages;
-    img.onchange = () => { s.sendImages = img.checked; saveSettings(); destroyWindow(); };
-
-    // секции
-    const box = q('#cf_s_sections');
-    for (const sec of SECTIONS) {
-        const lbl = el('label', 'checkbox_label');
-        const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.checked = isOn(s, sec);
-        cb.disabled = sec.id === 'basic';
-        cb.onchange = () => { s.sections[sec.id] = cb.checked; saveSettings(); destroyWindow(); };
-        lbl.append(cb, el('span', '', t(`sec.${sec.id}`)));
-        box.appendChild(lbl);
-    }
-
-    // цвета
-    root.querySelectorAll('[data-color]').forEach(inp => {
-        const k = inp.dataset.color;
-        inp.value = s.colors[k];
-        inp.oninput = () => { s.colors[k] = inp.value; applyColors(); saveSettings(); };
-    });
-    q('#cf_s_reset').onclick = () => {
-        s.colors = { ...DEFAULTS.colors };
-        applyColors();
-        saveSettings();
-        root.querySelectorAll('[data-color]').forEach(inp => { inp.value = s.colors[inp.dataset.color]; });
-    };
-
-    q('#cf_s_open').onclick = openWindow;
+    root.querySelector('#cf_s_open').onclick = () => openWindow();
 }
 
-/* ═══ index.js ═══ */
-// CharForge: точка входа.
+/* ═══ entry ═══ */
 function addMenuButton() {
     const menu = document.getElementById('extensionsMenu');
     if (!menu) { setTimeout(addMenuButton, 500); return; }
@@ -989,7 +1292,7 @@ function addMenuButton() {
         item.id = 'cf_wand';
         item.className = 'list-group-item flex-container flexGap5';
         item.innerHTML = '<div class="fa-solid fa-id-card extensionsMenuExtensionButton"></div><span></span>';
-        item.addEventListener('click', openWindow);
+        item.addEventListener('click', () => openWindow());
         menu.appendChild(item);
     }
     item.querySelector('span').textContent = t('menu');
@@ -1011,9 +1314,9 @@ function registerSlash() {
 jQuery(() => {
     const s = getSettings();
     setLang(s.lang);
-    applyColors();
     mountSettings();
     addMenuButton();
     registerSlash();
-    document.addEventListener('cf-lang', addMenuButton);
+    initGlobalHandlers();
+    document.addEventListener('cf-lang', () => { addMenuButton(); mountSettings(); });
 });
