@@ -603,36 +603,27 @@ const toast = (type, msg) => window.toastr?.[type]?.(msg);
 const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
 function openWindow(tab) {
-    if (!overlay) buildWindow();
-    switchTab(typeof tab === 'string' ? tab : state.tab);
-    overlay.classList.add('cf-open');
-    document.body.classList.add('cf-lock');
-    syncViewport();
+    try {
+        if (!overlay) buildWindow();
+        switchTab(typeof tab === 'string' ? tab : state.tab);
+        overlay.classList.add('cf-open');
+        document.body.classList.add('cf-lock');
+    } catch (e) {
+        console.error('[CharForge] open failed', e);
+        toast('error', `CharForge: ${e?.message || e}`);
+        destroyWindow();
+        document.body.classList.remove('cf-lock');
+    }
 }
 function destroyWindow() { overlay?.remove(); overlay = null; }
 function closeWindow() {
     overlay?.classList.remove('cf-open');
     document.body.classList.remove('cf-lock');
 }
-/** Подгоняет окно под реально видимую область (адресная строка и клавиатура на телефонах). */
-function syncViewport() {
-    if (!overlay) return;
-    const vv = window.visualViewport;
-    if (!vv || Math.abs(vv.scale - 1) > 0.01) {
-        overlay.style.removeProperty('--cf-vh');
-        overlay.style.removeProperty('--cf-top');
-        return;
-    }
-    overlay.style.setProperty('--cf-vh', `${Math.round(vv.height)}px`);
-    overlay.style.setProperty('--cf-top', `${Math.round(vv.offsetTop)}px`);
-}
 function initGlobalHandlers() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay?.classList.contains('cf-open')) closeWindow();
     });
-    window.visualViewport?.addEventListener('resize', syncViewport);
-    window.visualViewport?.addEventListener('scroll', syncViewport);
-    window.addEventListener('orientationchange', () => setTimeout(syncViewport, 300));
 }
 function applyTheme() { if (overlay) overlay.dataset.theme = getSettings().theme; }
 

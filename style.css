@@ -191,9 +191,9 @@ body.cf-lock { overflow: hidden; }
 /* Телефон и низкие экраны: окно занимает весь экран и не вылезает за его пределы.
    Размер берётся от fixed-оверлея (inset: 0), а не от vh/dvh, чтобы не зависеть от адресной строки браузера. */
 @media (max-width: 720px), (max-height: 520px) {
-    .cf-overlay { align-items: flex-start; justify-content: stretch; backdrop-filter: none; }
+    .cf-overlay { align-items: stretch; justify-content: stretch; backdrop-filter: none; }
     .cf-window {
-        width: 100%; height: var(--cf-vh, 100%); margin-top: var(--cf-top, 0px);
+        width: 100%; height: 100%;
         max-width: 100%; max-height: 100%;
         border-radius: 0; border: none;
         padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
