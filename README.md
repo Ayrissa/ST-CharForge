@@ -42,10 +42,10 @@ https://github.com/Ayrissa/ST-CharForge
 ## Структура
 
 ```
-manifest.json   index.js   style.css   LICENSE   README.md
+manifest.json   index.js   LICENSE   README.md
 ```
 
-Вся логика собрана в одном `index.js`, без подпапок.
+Вся логика и стили собраны в одном `index.js`, без подпапок. Файл `style.css` не нужен (если он есть в репозитории, он просто игнорируется).
 
 ## Лицензия
 
