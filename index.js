@@ -38,7 +38,8 @@ const D = {
         errEmpty: 'Сначала опиши персонажа.',
         errParse: 'Не удалось разобрать ответ модели. Попробуй ещё раз.',
         errNoDossier: 'Сначала сгенерируй анкету.',
-        errMissing: 'Модель пропустила секции: {list}. Нажми «Сгенерировать» у нужной секции.',
+        errMissing: 'Секции пропущены или обрезаны: {list}. Нажми «Сгенерировать» у нужной секции.',
+        completing: 'Дописываю секцию: {list}…',
         errFailed: 'Ошибка запроса: {msg}',
         errCreate: 'Не удалось создать персонажа: {msg}',
         cancelled: 'Отменено',
@@ -66,7 +67,7 @@ const D = {
         sImages: 'Отправлять картинки-референсы модели',
         sFirstWords: 'Лимит первого сообщения (слов)',
         sFirstLang: 'Язык первого сообщения', lAuto: 'Как в описании', lEn: 'Английский', lRu: 'Русский',
-        sFirstFmt: 'Оформление', fAst: '*Действия* и «реплики»', fPlain: 'Обычный текст',
+        sFirstFmt: 'Оформление', fAst: '*Действия* и «реплики»', fPlain: 'Обычный текст', fLit: '«Речь» + обычный текст (литературный стиль)',
         sBasicNote: 'Базовые данные включены всегда.',
         sOpen: 'Открыть конструктор',
         thAuto: 'Авто', thMidnight: 'Полночь', thRose: 'Роза', thForest: 'Лес', thPaper: 'Бумага',
@@ -111,7 +112,8 @@ const D = {
         errEmpty: 'Describe the character first.',
         errParse: 'Could not parse the model response. Try again.',
         errNoDossier: 'Generate a dossier first.',
-        errMissing: 'The model skipped sections: {list}. Press "Generate" on the section you need.',
+        errMissing: 'Sections skipped or cut off: {list}. Press "Generate" on the section you need.',
+        completing: 'Completing section: {list}…',
         errFailed: 'Request failed: {msg}',
         errCreate: 'Could not create character: {msg}',
         cancelled: 'Cancelled',
@@ -137,7 +139,7 @@ const D = {
         sImages: 'Send reference images to the model',
         sFirstWords: 'First message limit (words)',
         sFirstLang: 'First message language', lAuto: 'Same as concept', lEn: 'English', lRu: 'Russian',
-        sFirstFmt: 'Formatting', fAst: '*Actions* and "speech"', fPlain: 'Plain prose',
+        sFirstFmt: 'Formatting', fAst: '*Actions* and "speech"', fPlain: 'Plain prose', fLit: '"Speech" + plain text (literary style)',
         sBasicNote: 'Basic info is always on.',
         sOpen: 'Open Character Forge',
         thAuto: 'Auto', thMidnight: 'Midnight', thRose: 'Rose', thForest: 'Forest', thPaper: 'Paper',
@@ -163,6 +165,7 @@ const SECTIONS = [
     {
         id: 'basic', title: 'Basic', weight: 0.08, fields: [
             { key: 'Name', hint: 'real name; the only place it appears' },
+            { key: 'Nicknames', hint: '2-4 nicknames / what friends, enemies, lovers call them' },
             { key: 'Gender', hint: 'gender identity / sex' },
             { key: 'Age', hint: 'number' },
             { key: 'Species', hint: 'species/race, "Human" if ordinary' },
@@ -257,7 +260,7 @@ const DEFAULTS = {
     theme: 'auto',
     profileId: '',
     tokenBudget: 1000,
-    maxResponse: 3000,
+    maxResponse: 4200,
     examples: 4,
     creativity: 'balanced',
     inventPeople: true,
@@ -274,6 +277,7 @@ function getSettings() {
     const store = SillyTavern.getContext().extensionSettings;
     if (!store[KEY] || typeof store[KEY] !== 'object') store[KEY] = {};
     const s = store[KEY];
+    if (!s._v) { if (s.maxResponse === 3000) s.maxResponse = 4200; s._v = 2; } // миграция: новый лимит по умолчанию
     for (const [k, v] of Object.entries(DEFAULTS)) if (s[k] === undefined) s[k] = structuredClone(v);
     if (!s.sections || typeof s.sections !== 'object') s.sections = {};
     for (const [k, v] of Object.entries(DEFAULTS.sections)) if (s.sections[k] === undefined) s.sections[k] = v;
@@ -297,9 +301,10 @@ const CREATIVITY_RULES = {
     free: 'Be bold and inventive: add distinctive hooks, secrets, inner contradictions, backstory events and memorable quirks that fit the concept. Avoid cliches. Input facts always stay true.',
 };
 
-function skeleton(s, secs) {
+/** denom: секции, по которым делится бюджет (для одной секции передаём все включённые). */
+function skeleton(s, secs, denom = secs) {
     const total = wordBudget(s.tokenBudget);
-    const wsum = secs.reduce((a, x) => a + x.weight, 0);
+    const wsum = denom.reduce((a, x) => a + x.weight, 0);
     return secs.map(sec => {
         const w = Math.max(8, Math.round(total * sec.weight / wsum));
         const lines = sec.fields.map(f => {
@@ -310,14 +315,16 @@ function skeleton(s, secs) {
     }).join('\n\n');
 }
 
-function rules(s, secs, name) {
+function rules(s, secs, name, sectionWords = 0) {
     const words = wordBudget(s.tokenBudget);
     const r = [
         'Output ONLY the dossier: no preface, no commentary, no markdown, no code fences.',
         'Use exactly the section headers in square brackets and exactly the field keys from the skeleton, in the same order, one field per line. Do NOT copy the word targets or the <hints>.',
         'Never omit a section or a field. Every field must contain content.',
         'Write terse fragments separated by commas or semicolons. No full sentences, no filler, no flowery prose, no repetition between fields.',
-        `HARD LIMIT: the whole dossier is at most ${words} words (about ${s.tokenBudget} tokens). Respect the per-section word targets.`,
+        sectionWords
+            ? `HARD LIMIT: this section is at most ${sectionWords} words. Every field must still be present.`
+            : `HARD LIMIT: the whole dossier is at most ${words} words (about ${s.tokenBudget} tokens). Respect the per-section word targets. Plan the length so the LAST section is complete: if you run long, shorten earlier fields instead of cutting off the end.`,
         CREATIVITY_RULES[s.creativity] || CREATIVITY_RULES.balanced,
         'Write {{char}} for the character and {{user}} for the user\'s character. The real name appears only in the Name field.',
         name ? `The character's name is "${name}": use it exactly in the Name field.` : 'Invent a fitting name for the Name field.',
@@ -353,8 +360,11 @@ function buildGenerateMessages(s, name, concept, refText, images) {
 }
 
 function buildSectionMessages(s, sec, name, concept, refText, dossierText, instruction) {
-    const sys = `${rules(s, [sec], name)}\n\nTask: write ONLY the section [${sec.title}] for the dossier below. Keep it consistent with the other sections. Output only that one section (header + fields).\n\nSKELETON:\n${skeleton(s, [sec])}`;
-    let user = `CURRENT DOSSIER:\n${dossierText || '(empty)'}\n\n${name ? `CHARACTER NAME: ${name}\n\n` : ''}CONCEPT:\n${concept.trim()}`;
+    const all = enabledSections(s);
+    const wsum = all.reduce((a, x) => a + x.weight, 0);
+    const secWords = Math.max(15, Math.round(wordBudget(s.tokenBudget) * sec.weight / wsum * 1.15));
+    const sys = `${rules(s, [sec], name, secWords)}\n\nTask: write ONLY the section [${sec.title}] for the dossier below. Keep it consistent with the other sections. Output only that one section (header + fields).\n\nSKELETON:\n${skeleton(s, [sec], all)}`;
+    let user = `CURRENT DOSSIER:\n${dossierText || '(empty)'}\n\n${name ? `CHARACTER NAME: ${name}\n\n` : ''}CONCEPT:\n${concept.trim() || '(see dossier)'}`;
     if (refText.trim()) user += `\n\nREFERENCES:\n${refText.trim()}`;
     user += instruction.trim() ? `\n\nINSTRUCTION FOR THE [${sec.title}] SECTION: ${instruction.trim()}` : `\n\nWrite the [${sec.title}] section${dossierText.includes(`[${sec.title}]`) ? ' as a fresh, different take' : ''}.`;
     return [{ role: 'system', content: sys }, { role: 'user', content: user }];
@@ -379,15 +389,21 @@ function buildFirstMessageMessages(s, name, concept, dossierText, scene) {
         en: 'Write in English.',
         ru: 'Write in Russian.',
     }[s.firstMesLang] || 'Write in English.';
-    const fmt = s.firstMesFmt === 'plain'
-        ? 'Format: plain prose, no asterisks; spoken lines in "quotes".'
-        : 'Format: narration and actions in *asterisks*, spoken lines in "quotes".';
+    const FMT = {
+        asterisks: 'Format: narration and actions in *asterisks*, spoken lines in "quotes".',
+        plain: 'Format: plain prose without markup: no asterisks; spoken lines in "quotes".',
+        literary: 'Format: literary prose in the style of a novel excerpt. Narration and actions as plain text in well-formed paragraphs with vivid sensory detail and a distinct narrative voice; spoken lines in "quotes" woven into the narration. No asterisks, no markdown.',
+    };
+    const fmt = FMT[s.firstMesFmt] || FMT.asterisks;
+    const tense = s.firstMesFmt === 'literary'
+        ? 'Narrate in third person with one consistent tense (past tense is fine).'
+        : 'Narrate in third person, present tense.';
     const sys = [
         'You write the opening message (first message) of a roleplay character card, from the narrator/character side.',
         'Rules:',
         `1. HARD LIMIT: at most ${words} words. Aim for about ${Math.round(words * 0.8)}.`,
         '2. Use {{char}} for the character and {{user}} for the user. Never write {{user}}\'s actions, words, thoughts or feelings.',
-        '3. Narrate in third person, present tense. Show personality through behavior and speech that match the dossier (Speech section, quirks, outfit).',
+        `3. ${tense} Show personality through behavior and speech that match the dossier (Speech section, quirks, outfit).`,
         '4. Give a concrete setting and one clear situation; end on a natural hook that invites {{user}} to respond.',
         `5. ${fmt}`,
         `6. ${lang}`,
@@ -396,6 +412,25 @@ function buildFirstMessageMessages(s, name, concept, dossierText, scene) {
     let user = `${name ? `CHARACTER NAME: ${name}\n\n` : ''}${dossierText ? `DOSSIER:\n${dossierText}\n\n` : ''}CONCEPT:\n${concept.trim() || '(see dossier)'}`;
     user += scene.trim() ? `\n\nSCENE / SITUATION: ${scene.trim()}` : '\n\nChoose a fitting, engaging opening situation.';
     return [{ role: 'system', content: sys }, { role: 'user', content: user }];
+}
+
+const normKey = (x) => x.toLowerCase().replace(/[^a-z]/g, '');
+
+/** Возвращает список полей, которых нет или которые пусты/обрезаны. */
+function sectionIssues(s, sec, text) {
+    const lines = (text || '').split(/\r?\n/);
+    const keyOf = (l) => { const i = l.indexOf(':'); return i > 0 ? normKey(l.slice(0, i)) : ''; };
+    const issues = [];
+    for (const f of sec.fields) {
+        const idx = lines.findIndex(l => keyOf(l) === normKey(f.key));
+        if (idx < 0) { issues.push(f.key); continue; }
+        const val = lines[idx].slice(lines[idx].indexOf(':') + 1).trim();
+        if (f.key === 'Examples') {
+            const n = lines.slice(idx + 1).filter(l => /^\s*[-*•]/.test(l)).length + (val ? 1 : 0);
+            if (n < Math.max(1, s.examples - 1)) issues.push(f.key);
+        } else if (!val) issues.push(f.key);
+    }
+    return issues;
 }
 
 const stripJunk = (text) => String(text).replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/```[a-z]*/gi, '');
@@ -775,6 +810,7 @@ async function run(label, fn) {
     } finally {
         setBusy(false);
         setStatus(msg, isErr);
+        if (isErr) toast('error', msg);
         state.abort = null;
     }
 }
@@ -836,6 +872,19 @@ function modelImages() {
 
 /* ───────────── Генерация ───────────── */
 
+const completeNote = (issues) => `Your previous version of this section was incomplete or cut off (missing or empty: ${issues.join(', ')}). Write the FULL section with every field, keeping the good existing content.`;
+
+/** Запрашивает одну секцию и записывает её в черновик. */
+async function regenSection(s, d, sec, instruction, signal) {
+    const name = d.name.trim() || getName(d.dossier);
+    const msgs = buildSectionMessages(s, sec, name, d.concept, d.refText, assemble(s, d.dossier), instruction);
+    const text = await requestModel(s.profileId, msgs, s.maxResponse, signal);
+    const body = extractSection(text, sec);
+    if (!body.trim()) throw new Error(t('errParse'));
+    d.dossier[sec.id] = body;
+    saveSettings();
+}
+
 function doGenerate() {
     const s = getSettings(), d = s.draft;
     const imgs = modelImages();
@@ -852,21 +901,30 @@ function doGenerate() {
         }
         saveSettings();
         renderSections();
-        const missing = enabledSections(s).filter(x => !parsed[x.id]).map(x => t(`sec.${x.id}`));
-        return missing.length ? t('errMissing', { list: missing.join(', ') }) : '';
+
+        // Модель могла пропустить или оборвать секции (обычно последние): дописываем их по одной.
+        const secs = enabledSections(s);
+        for (const sec of secs) {
+            const issues = sectionIssues(s, sec, d.dossier[sec.id]);
+            if (!issues.length) continue;
+            setStatus(t('completing', { list: t(`sec.${sec.id}`) }));
+            try {
+                await regenSection(s, d, sec, completeNote(issues), signal);
+                renderSections();
+            } catch (e) {
+                if (e?.name === 'AbortError') throw e;
+                console.warn('[CharForge] completion failed for', sec.id, e);
+            }
+        }
+        const bad = secs.filter(x => sectionIssues(s, x, d.dossier[x.id]).length).map(x => t(`sec.${x.id}`));
+        return bad.length ? t('errMissing', { list: bad.join(', ') }) : '';
     });
 }
 
 function doSection(sec, instruction) {
     const s = getSettings(), d = s.draft;
     return run(t('regenerating'), async (signal) => {
-        const name = d.name.trim() || getName(d.dossier);
-        const msgs = buildSectionMessages(s, sec, name, d.concept, d.refText, assemble(s, d.dossier), instruction);
-        const text = await requestModel(s.profileId, msgs, Math.min(s.maxResponse, 1500), signal);
-        const body = extractSection(text, sec);
-        if (!body.trim()) throw new Error(t('errParse'));
-        d.dossier[sec.id] = body;
-        saveSettings();
+        await regenSection(s, d, sec, instruction, signal);
         renderSections();
     });
 }
@@ -1245,7 +1303,7 @@ function buildSettingsView() {
     const grid2 = el('div', 'cf-s-grid');
     field(grid2, t('sFirstWords'), number('firstMesWords', 50, 400, 10, updateFirstUI));
     field(grid2, t('sFirstLang'), select('firstMesLang', [['auto', t('lAuto')], ['en', t('lEn')], ['ru', t('lRu')]]));
-    field(grid2, t('sFirstFmt'), select('firstMesFmt', [['asterisks', t('fAst')], ['plain', t('fPlain')]]));
+    field(grid2, t('sFirstFmt'), select('firstMesFmt', [['asterisks', t('fAst')], ['plain', t('fPlain')], ['literary', t('fLit')]]));
     g.appendChild(grid2);
 
     // Секции
