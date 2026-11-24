@@ -3,6 +3,20 @@
 /* ═══ i18n ═══ */
 const D = {
     ru: {
+        kindChar: 'Персонаж', kindPersona: 'Персона', conceptPersona: 'Описание персоны',
+        pullPersona: 'Подтянуть из текущей персоны', pullPersonaNone: 'Описание текущей персоны пусто', pullPersonaDone: 'Описание персоны добавлено',
+        applyPersona: 'Применить к персоне',
+        personaApplied: 'Описание применено к текущей персоне «{name}»',
+        personaReplace: 'В текущей персоне уже есть описание. Заменить его новым?',
+        personaNoField: 'Поле описания персоны не найдено: текст скопирован в буфер обмена.',
+        sPersonaBudget: 'Бюджет анкеты персоны (токены)',
+        sRelNote: 'Для персоны взаимоотношения и первое сообщение не используются.',
+        badgePersona: 'Персона', libApply: 'Применить к персоне',
+        avatarPersona: 'Аватар персоны',
+        personaAvatarReplace: 'Заменить аватар текущей персоны этим изображением? Прежний аватар будет перезаписан.',
+        personaAvatarNone: 'Не удалось определить аватар текущей персоны: аватар не применён.',
+        personaAvatarDone: 'Аватар текущей персоны обновлён',
+        personaAvatarFail: 'Не удалось обновить аватар персоны: {msg}',
         title: 'Конструктор персонажей',
         menu: 'Конструктор персонажей',
         tabCreate: 'Создание', tabLibrary: 'Библиотека', tabSettings: 'Настройки',
@@ -57,7 +71,7 @@ const D = {
         sLang: 'Язык интерфейса',
         sProfile: 'Профиль подключения', sProfileCur: '— Текущий профиль Таверны —',
         sProfileNote: 'Используются только профили Connection Manager. Ключи API расширение не видит.',
-        sBudget: 'Бюджет анкеты (токены)', sMax: 'Лимит ответа модели (токены)', sExamples: 'Примеров реплик',
+        sBudget: 'Бюджет анкеты персонажа (токены)', sMax: 'Лимит ответа модели (токены)', sExamples: 'Примеров реплик',
         sCreativity: 'Свобода додумывания',
         cStrict: 'Строго', cBalanced: 'Баланс', cFree: 'Смело',
         cStrictH: 'Только то, что следует из описания.',
@@ -77,6 +91,20 @@ const D = {
         'sec.sexuality': 'Сексуальность', 'sec.relationships': 'Взаимоотношения', 'sec.speech': 'Манера речи',
     },
     en: {
+        kindChar: 'Character', kindPersona: 'Persona', conceptPersona: 'Persona concept',
+        pullPersona: 'Pull from current persona', pullPersonaNone: 'The current persona description is empty', pullPersonaDone: 'Persona description added',
+        applyPersona: 'Apply to persona',
+        personaApplied: 'Description applied to the current persona "{name}"',
+        personaReplace: 'The current persona already has a description. Replace it with the new one?',
+        personaNoField: 'Persona description field not found: the text was copied to the clipboard.',
+        sPersonaBudget: 'Persona dossier budget (tokens)',
+        sRelNote: 'Relationships and the first message are not used for a persona.',
+        badgePersona: 'Persona', libApply: 'Apply to persona',
+        avatarPersona: 'Persona avatar',
+        personaAvatarReplace: 'Replace the avatar of the current persona with this image? The previous avatar will be overwritten.',
+        personaAvatarNone: 'Could not determine the current persona avatar: the avatar was not applied.',
+        personaAvatarDone: 'Current persona avatar updated',
+        personaAvatarFail: 'Could not update the persona avatar: {msg}',
         title: 'Character Forge',
         menu: 'Character Forge',
         tabCreate: 'Create', tabLibrary: 'Library', tabSettings: 'Settings',
@@ -129,7 +157,7 @@ const D = {
         sLang: 'Interface language',
         sProfile: 'Connection profile', sProfileCur: '— Current SillyTavern profile —',
         sProfileNote: 'Only Connection Manager profiles are used. The extension never sees API keys.',
-        sBudget: 'Dossier budget (tokens)', sMax: 'Model response limit (tokens)', sExamples: 'Dialogue examples',
+        sBudget: 'Character dossier budget (tokens)', sMax: 'Model response limit (tokens)', sExamples: 'Dialogue examples',
         sCreativity: 'Creative freedom',
         cStrict: 'Strict', cBalanced: 'Balanced', cFree: 'Bold',
         cStrictH: 'Only what follows from the concept.',
@@ -159,7 +187,7 @@ function t(key, vars = {}) {
 }
 
 /* ═══ styles (встроены в файл) ═══ */
-const CF_CSS = "/* CharForge */\nbody.cf-lock { overflow: hidden; }\n\n/* ── Темы ── */\n.cf-overlay {\n    --cf-accent: #a07cf0; --cf-bg: #17171d; --cf-panel: #22222b; --cf-text: #ecebf2;\n    --cf-on-accent: #fff; --cf-err: #ff8a8a;\n}\n.cf-overlay[data-theme=\"midnight\"] { --cf-accent: #a07cf0; --cf-bg: #17171d; --cf-panel: #22222b; --cf-text: #ecebf2; }\n.cf-overlay[data-theme=\"rose\"]     { --cf-accent: #e0709a; --cf-bg: #1f1519; --cf-panel: #2b1d23; --cf-text: #f4e8ec; }\n.cf-overlay[data-theme=\"forest\"]   { --cf-accent: #5fbf8a; --cf-bg: #111a16; --cf-panel: #1a2822; --cf-text: #e4efe8; --cf-on-accent: #0c1511; }\n.cf-overlay[data-theme=\"paper\"]    { --cf-accent: #9a5b2e; --cf-bg: #f6f1e7; --cf-panel: #ebe3d3; --cf-text: #2b2620; --cf-err: #b3261e; }\n/* Авто: цвета текущей темы Таверны */\n.cf-overlay[data-theme=\"auto\"] {\n    --cf-bg: var(--SmartThemeBlurTintColor, #17171d);\n    --cf-text: var(--SmartThemeBodyColor, #ecebf2);\n    --cf-accent: var(--SmartThemeQuoteColor, #a07cf0);\n    --cf-panel: color-mix(in srgb, var(--cf-text) 9%, var(--cf-bg));\n}\n\n.cf-overlay {\n    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9000;\n    display: none; align-items: center; justify-content: center;\n    background: rgba(0, 0, 0, .62);\n    backdrop-filter: blur(3px);\n}\n.cf-overlay.cf-open { display: flex; }\n\n.cf-window {\n    width: min(1060px, 96vw);\n    height: min(92vh, 940px);\n    height: min(92dvh, 940px);\n    display: flex; flex-direction: column;\n    background: linear-gradient(var(--cf-bg), var(--cf-bg)), #121216;\n    color: var(--cf-text);\n    border: 1px solid var(--cf-accent);\n    border-radius: 14px; overflow: hidden; max-width: 100%;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, .5);\n    font-size: 15px;\n}\n\n.cf-head, .cf-foot {\n    display: flex; align-items: center; gap: 8px;\n    padding: 10px 14px; background: var(--cf-panel);\n}\n.cf-head { justify-content: space-between; }\n.cf-foot { flex-wrap: wrap; justify-content: flex-end; border-top: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); padding-bottom: max(10px, env(safe-area-inset-bottom)); }\n.cf-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1em; }\n.cf-title i { color: var(--cf-accent); }\n.cf-head-actions { display: flex; gap: 6px; }\n\n/* Вкладки */\n.cf-tabs { display: flex; gap: 4px; padding: 0 10px; background: var(--cf-panel); border-bottom: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); }\n.cf-tab {\n    display: flex; align-items: center; gap: 8px; min-width: 0;\n    background: none; border: none; border-bottom: 3px solid transparent;\n    color: var(--cf-text); opacity: .7; cursor: pointer;\n    padding: 10px 14px; font: inherit; font-size: .95em;\n}\n.cf-tab:hover { opacity: 1; }\n.cf-tab.cf-active { opacity: 1; border-bottom-color: var(--cf-accent); font-weight: 600; }\n.cf-tab i { color: var(--cf-accent); }\n.cf-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n\n.cf-view { display: none; flex: 1; min-height: 0; flex-direction: column; }\n.cf-view.cf-active { display: flex; }\n\n.cf-body {\n    flex: 1; min-height: 0; overflow-y: auto;\n    display: grid; grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);\n    gap: 14px; padding: 14px; align-items: start; overflow-x: hidden;\n}\n.cf-col, .cf-card, .cf-field, .cf-group, .cf-view { min-width: 0; }\n.cf-col { display: flex; flex-direction: column; gap: 8px; }\n\n.cf-label { font-weight: 600; font-size: .9em; opacity: .85; margin-top: 2px; }\n\n.cf-ta, .cf-input-line, .cf-select {\n    width: 100%; box-sizing: border-box;\n    background: var(--cf-panel); color: var(--cf-text);\n    border: 1px solid color-mix(in srgb, var(--cf-text) 18%, transparent);\n    border-radius: 8px; padding: 8px 10px;\n    font: inherit; font-size: 16px; line-height: 1.4;\n}\n.cf-ta { resize: vertical; }\n.cf-select { max-width: 100%; text-overflow: ellipsis; }\n.cf-body, .cf-lib-grid, .cf-settings-body { overscroll-behavior: contain; }\n.cf-ta:focus, .cf-input-line:focus, .cf-select:focus { outline: none; border-color: var(--cf-accent); }\n.cf-ta-sec, .cf-ta-first { resize: none; overflow: hidden; font-size: 14px; }\n.cf-ta-sec { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }\n.cf-ta-first { min-height: 110px; }\n\n.cf-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }\n.cf-between { justify-content: space-between; }\n.cf-btn, .cf-icon-btn {\n    display: inline-flex; align-items: center; justify-content: center; gap: 6px;\n    background: var(--cf-panel); color: var(--cf-text);\n    border: 1px solid color-mix(in srgb, var(--cf-accent) 55%, transparent);\n    border-radius: 8px; padding: 8px 14px; cursor: pointer;\n    font: inherit; font-size: .95em; min-height: 40px;\n    transition: background .15s, transform .05s;\n}\n.cf-btn:hover:not(:disabled), .cf-icon-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 25%, var(--cf-panel)); }\n.cf-btn:active:not(:disabled) { transform: scale(.98); }\n.cf-btn:disabled, .cf-icon-btn:disabled { opacity: .45; cursor: not-allowed; }\n.cf-btn[hidden] { display: none; }\n.cf-primary { background: var(--cf-accent); color: var(--cf-on-accent); border-color: var(--cf-accent); font-weight: 600; }\n.cf-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 85%, #fff); }\n.cf-danger { border-color: var(--cf-err); }\n.cf-danger-text { color: var(--cf-err); }\n.cf-small { padding: 4px 10px; min-height: 34px; }\n.cf-icon-btn { padding: 6px 10px; min-height: 36px; border-color: transparent; background: transparent; }\n\n.cf-note { font-size: .8em; opacity: .65; }\n.cf-status { min-height: 1.3em; font-size: .9em; color: var(--cf-accent); }\n.cf-status.cf-err { color: var(--cf-err); }\n.cf-check { display: flex; align-items: flex-start; gap: 8px; font-size: .9em; cursor: pointer; }\n.cf-check input { margin-top: 3px; accent-color: var(--cf-accent); }\n\n.cf-images { display: flex; flex-wrap: wrap; gap: 8px; }\n.cf-images:empty { display: none; }\n.cf-thumb { position: relative; width: 72px; height: 72px; }\n.cf-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--cf-accent); }\n.cf-thumb-x {\n    position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;\n    border-radius: 50%; border: none; cursor: pointer;\n    background: #d06060; color: #fff; line-height: 1; font-size: 15px;\n}\n\n.cf-avatar-row { display: flex; gap: 12px; align-items: flex-start; }\n.cf-avatar-side { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }\n.cf-avatar {\n    flex: none; width: 84px; height: 112px; border-radius: 10px; overflow: hidden;\n    background: var(--cf-panel); border: 1px dashed color-mix(in srgb, var(--cf-accent) 60%, transparent);\n    display: flex; align-items: center; justify-content: center; color: var(--cf-accent); font-size: 28px;\n}\n.cf-avatar img { width: 100%; height: 100%; object-fit: cover; }\n\n.cf-meter { display: flex; align-items: center; gap: 10px; font-size: .9em; position: sticky; top: -14px; background: var(--cf-bg); padding: 6px 0; z-index: 1; }\n.cf-meter span { white-space: nowrap; font-variant-numeric: tabular-nums; }\n.cf-over-text { color: var(--cf-err); font-weight: 600; }\n.cf-bar { flex: 1; height: 8px; background: var(--cf-panel); border-radius: 4px; overflow: hidden; }\n#cf-bar-fill { height: 100%; width: 0; background: var(--cf-accent); transition: width .25s; }\n#cf-bar-fill.cf-over { background: var(--cf-err); }\n\n#cf-sections { display: flex; flex-direction: column; gap: 10px; }\n.cf-output { gap: 10px; }\n.cf-card { background: color-mix(in srgb, var(--cf-panel) 60%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }\n.cf-card-title { font-weight: 700; color: var(--cf-accent); }\n.cf-sec-row .cf-input-line { flex: 1; min-width: 120px; padding: 5px 8px; font-size: 14px; }\n.cf-empty { opacity: .55; text-align: center; padding: 30px 10px; }\n.cf-empty[hidden] { display: none; }\n\n/* Библиотека */\n.cf-lib-bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px 0; }\n.cf-lib-grid { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 10px; align-content: start; }\n.cf-lib-grid > .cf-empty { grid-column: 1 / -1; }\n.cf-lib-note { padding: 6px 14px 10px; text-align: center; }\n.cf-lib-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; padding: 10px; background: color-mix(in srgb, var(--cf-panel) 70%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; }\n.cf-lib-thumb { width: 64px; height: 86px; border-radius: 8px; overflow: hidden; background: var(--cf-panel); display: flex; align-items: center; justify-content: center; color: var(--cf-accent); font-size: 22px; }\n.cf-lib-thumb img { width: 100%; height: 100%; object-fit: cover; }\n.cf-lib-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }\n.cf-lib-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n.cf-lib-snippet { font-size: .85em; opacity: .8; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }\n.cf-lib-actions { grid-column: 1 / -1; display: flex; gap: 4px; justify-content: flex-end; border-top: 1px solid color-mix(in srgb, var(--cf-text) 10%, transparent); padding-top: 6px; }\n.cf-lib-btn { border: 1px solid color-mix(in srgb, var(--cf-accent) 40%, transparent); min-width: 40px; }\n\n/* Настройки */\n.cf-settings-body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 14px; display: flex; flex-direction: column; gap: 16px; }\n.cf-group { display: flex; flex-direction: column; gap: 10px; padding: 12px; background: color-mix(in srgb, var(--cf-panel) 60%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; }\n.cf-group-title { font-weight: 700; color: var(--cf-accent); }\n.cf-field { display: flex; flex-direction: column; gap: 4px; }\n.cf-field-label { font-size: .9em; font-weight: 600; opacity: .9; }\n.cf-s-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 10px; }\n.cf-s-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 8px 12px; }\n.cf-swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(96px, 100%), 1fr)); gap: 8px; }\n.cf-swatch {\n    display: flex; flex-direction: column; align-items: center; gap: 6px;\n    padding: 10px 6px; border-radius: 10px; cursor: pointer; font: inherit; font-size: .85em;\n    background: var(--sw-bg); color: var(--cf-text);\n    border: 2px solid transparent; outline: 1px solid color-mix(in srgb, var(--cf-text) 20%, transparent);\n}\n.cf-swatch.cf-sw-auto { background: linear-gradient(135deg, #17171d 50%, #f6f1e7 50%); }\n.cf-swatch.cf-active { border-color: var(--cf-accent); outline-color: var(--cf-accent); }\n.cf-sw-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--sw-ac); border: 2px solid rgba(255,255,255,.5); }\n.cf-sw-name { background: rgba(0,0,0,.55); color: #fff; padding: 1px 8px; border-radius: 6px; }\n\n/* Панель в Extensions */\n#cf_settings .menu_button { width: 100%; }\n\n/* Телефон и низкие экраны: окно занимает весь экран и не вылезает за его пределы.\n   Размер берётся от fixed-оверлея (inset: 0), а не от vh/dvh, чтобы не зависеть от адресной строки браузера. */\n@media (max-width: 720px), (max-height: 520px) {\n    .cf-overlay { align-items: stretch; justify-content: stretch; backdrop-filter: none; }\n    .cf-window {\n        width: 100%; height: 100%;\n        max-width: 100%; max-height: 100%;\n        border-radius: 0; border: none;\n        padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);\n        box-shadow: none;\n    }\n    .cf-head { padding-top: max(8px, env(safe-area-inset-top, 0px)); }\n}\n@media (max-width: 720px) {\n    .cf-window { font-size: 14px; }\n    /* 16px в полях ввода: иначе мобильные браузеры приближают страницу при фокусе */\n    .cf-overlay input, .cf-overlay textarea, .cf-overlay select,\n    .cf-ta-sec, .cf-ta-first, .cf-sec-row .cf-input-line { font-size: 16px; }\n    .cf-tabs { padding: 0 4px; }\n    .cf-tab { flex: 1 1 0; justify-content: center; padding: 10px 4px; gap: 5px; font-size: .88em; }\n    .cf-body { grid-template-columns: minmax(0, 1fr); padding: 10px; gap: 12px; }\n    .cf-meter { top: -10px; }\n    .cf-lib-grid { grid-template-columns: minmax(0, 1fr); padding: 10px; }\n    .cf-lib-bar { padding: 10px 10px 0; }\n    .cf-settings-body { padding: 10px; }\n    .cf-group { padding: 10px; }\n    /* нижняя панель: одна строка, у второстепенных кнопок только иконки */\n    .cf-foot { flex-wrap: nowrap; gap: 6px; padding: 8px 10px max(8px, env(safe-area-inset-bottom, 0px)); }\n    .cf-foot .cf-btn { flex: 1 1 0; min-width: 40px; padding: 8px 6px; }\n    .cf-foot .cf-btn .cf-bl { display: none; }\n    .cf-foot .cf-primary { flex: 3 1 0; }\n    .cf-foot .cf-primary .cf-bl { display: inline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n    .cf-avatar { width: 72px; height: 96px; }\n}\n@media (max-height: 520px) {\n    .cf-head { padding-bottom: 4px; }\n    .cf-tab { padding: 6px 10px; }\n    .cf-foot { padding-top: 6px; }\n    .cf-btn { min-height: 34px; }\n}\n";
+const CF_CSS = "/* CharForge */\nbody.cf-lock { overflow: hidden; }\n\n/* ── Темы ── */\n.cf-overlay {\n    --cf-accent: #a07cf0; --cf-bg: #17171d; --cf-panel: #22222b; --cf-text: #ecebf2;\n    --cf-on-accent: #fff; --cf-err: #ff8a8a;\n}\n.cf-overlay[data-theme=\"midnight\"] { --cf-accent: #a07cf0; --cf-bg: #17171d; --cf-panel: #22222b; --cf-text: #ecebf2; }\n.cf-overlay[data-theme=\"rose\"]     { --cf-accent: #e0709a; --cf-bg: #1f1519; --cf-panel: #2b1d23; --cf-text: #f4e8ec; }\n.cf-overlay[data-theme=\"forest\"]   { --cf-accent: #5fbf8a; --cf-bg: #111a16; --cf-panel: #1a2822; --cf-text: #e4efe8; --cf-on-accent: #0c1511; }\n.cf-overlay[data-theme=\"paper\"]    { --cf-accent: #9a5b2e; --cf-bg: #f6f1e7; --cf-panel: #ebe3d3; --cf-text: #2b2620; --cf-err: #b3261e; }\n/* Авто: цвета текущей темы Таверны */\n.cf-overlay[data-theme=\"auto\"] {\n    --cf-bg: var(--SmartThemeBlurTintColor, #17171d);\n    --cf-text: var(--SmartThemeBodyColor, #ecebf2);\n    --cf-accent: var(--SmartThemeQuoteColor, #a07cf0);\n    --cf-panel: color-mix(in srgb, var(--cf-text) 9%, var(--cf-bg));\n}\n\n.cf-overlay {\n    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9000;\n    display: none; align-items: center; justify-content: center;\n    background: rgba(0, 0, 0, .62);\n    backdrop-filter: blur(3px);\n}\n.cf-overlay.cf-open { display: flex; }\n\n.cf-window {\n    width: min(1060px, 96vw);\n    height: min(92vh, 940px);\n    height: min(92dvh, 940px);\n    display: flex; flex-direction: column;\n    background: linear-gradient(var(--cf-bg), var(--cf-bg)), #121216;\n    color: var(--cf-text);\n    border: 1px solid var(--cf-accent);\n    border-radius: 14px; overflow: hidden; max-width: 100%;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, .5);\n    font-size: 15px;\n}\n\n.cf-head, .cf-foot {\n    display: flex; align-items: center; gap: 8px;\n    padding: 10px 14px; background: var(--cf-panel);\n}\n.cf-head { justify-content: space-between; }\n.cf-foot { flex-wrap: wrap; justify-content: flex-end; border-top: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); padding-bottom: max(10px, env(safe-area-inset-bottom)); }\n.cf-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1em; }\n.cf-title i { color: var(--cf-accent); }\n.cf-head-actions { display: flex; gap: 6px; }\n\n/* Вкладки */\n.cf-tabs { display: flex; gap: 4px; padding: 0 10px; background: var(--cf-panel); border-bottom: 1px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); }\n.cf-tab {\n    display: flex; align-items: center; gap: 8px; min-width: 0;\n    background: none; border: none; border-bottom: 3px solid transparent;\n    color: var(--cf-text); opacity: .7; cursor: pointer;\n    padding: 10px 14px; font: inherit; font-size: .95em;\n}\n.cf-tab:hover { opacity: 1; }\n.cf-tab.cf-active { opacity: 1; border-bottom-color: var(--cf-accent); font-weight: 600; }\n.cf-tab i { color: var(--cf-accent); }\n.cf-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n\n.cf-view { display: none; flex: 1; min-height: 0; flex-direction: column; }\n.cf-view.cf-active { display: flex; }\n\n.cf-body {\n    flex: 1; min-height: 0; overflow-y: auto;\n    display: grid; grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);\n    gap: 14px; padding: 14px; align-items: start; overflow-x: hidden;\n}\n.cf-col, .cf-card, .cf-field, .cf-group, .cf-view { min-width: 0; }\n.cf-col { display: flex; flex-direction: column; gap: 8px; }\n\n.cf-label { font-weight: 600; font-size: .9em; opacity: .85; margin-top: 2px; }\n\n.cf-ta, .cf-input-line, .cf-select {\n    width: 100%; box-sizing: border-box;\n    background: var(--cf-panel); color: var(--cf-text);\n    border: 1px solid color-mix(in srgb, var(--cf-text) 18%, transparent);\n    border-radius: 8px; padding: 8px 10px;\n    font: inherit; font-size: 16px; line-height: 1.4;\n}\n.cf-ta { resize: vertical; }\n.cf-select { max-width: 100%; text-overflow: ellipsis; }\n.cf-body, .cf-lib-grid, .cf-settings-body { overscroll-behavior: contain; }\n.cf-ta:focus, .cf-input-line:focus, .cf-select:focus { outline: none; border-color: var(--cf-accent); }\n.cf-ta-sec, .cf-ta-first { resize: none; overflow: hidden; font-size: 14px; }\n.cf-ta-sec { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }\n.cf-ta-first { min-height: 110px; }\n\n.cf-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }\n.cf-between { justify-content: space-between; }\n.cf-btn, .cf-icon-btn {\n    display: inline-flex; align-items: center; justify-content: center; gap: 6px;\n    background: var(--cf-panel); color: var(--cf-text);\n    border: 1px solid color-mix(in srgb, var(--cf-accent) 55%, transparent);\n    border-radius: 8px; padding: 8px 14px; cursor: pointer;\n    font: inherit; font-size: .95em; min-height: 40px;\n    transition: background .15s, transform .05s;\n}\n.cf-btn:hover:not(:disabled), .cf-icon-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 25%, var(--cf-panel)); }\n.cf-btn:active:not(:disabled) { transform: scale(.98); }\n.cf-btn:disabled, .cf-icon-btn:disabled { opacity: .45; cursor: not-allowed; }\n.cf-btn[hidden] { display: none; }\n.cf-primary { background: var(--cf-accent); color: var(--cf-on-accent); border-color: var(--cf-accent); font-weight: 600; }\n.cf-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 85%, #fff); }\n.cf-danger { border-color: var(--cf-err); }\n.cf-danger-text { color: var(--cf-err); }\n.cf-small { padding: 4px 10px; min-height: 34px; }\n.cf-icon-btn { padding: 6px 10px; min-height: 36px; border-color: transparent; background: transparent; }\n\n.cf-note { font-size: .8em; opacity: .65; }\n.cf-status { min-height: 1.3em; font-size: .9em; color: var(--cf-accent); }\n.cf-status.cf-err { color: var(--cf-err); }\n.cf-check { display: flex; align-items: flex-start; gap: 8px; font-size: .9em; cursor: pointer; }\n.cf-check input { margin-top: 3px; accent-color: var(--cf-accent); }\n\n.cf-images { display: flex; flex-wrap: wrap; gap: 8px; }\n.cf-images:empty { display: none; }\n.cf-thumb { position: relative; width: 72px; height: 72px; }\n.cf-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--cf-accent); }\n.cf-thumb-x {\n    position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;\n    border-radius: 50%; border: none; cursor: pointer;\n    background: #d06060; color: #fff; line-height: 1; font-size: 15px;\n}\n\n.cf-avatar-row { display: flex; gap: 12px; align-items: flex-start; }\n.cf-avatar-side { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }\n.cf-avatar {\n    flex: none; width: 84px; height: 112px; border-radius: 10px; overflow: hidden;\n    background: var(--cf-panel); border: 1px dashed color-mix(in srgb, var(--cf-accent) 60%, transparent);\n    display: flex; align-items: center; justify-content: center; color: var(--cf-accent); font-size: 28px;\n}\n.cf-avatar img { width: 100%; height: 100%; object-fit: cover; }\n\n.cf-meter { display: flex; align-items: center; gap: 10px; font-size: .9em; position: sticky; top: -14px; background: var(--cf-bg); padding: 6px 0; z-index: 1; }\n.cf-meter span { white-space: nowrap; font-variant-numeric: tabular-nums; }\n.cf-over-text { color: var(--cf-err); font-weight: 600; }\n.cf-bar { flex: 1; height: 8px; background: var(--cf-panel); border-radius: 4px; overflow: hidden; }\n#cf-bar-fill { height: 100%; width: 0; background: var(--cf-accent); transition: width .25s; }\n#cf-bar-fill.cf-over { background: var(--cf-err); }\n\n#cf-sections { display: flex; flex-direction: column; gap: 10px; }\n.cf-output { gap: 10px; }\n.cf-card { background: color-mix(in srgb, var(--cf-panel) 60%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }\n.cf-card-title { font-weight: 700; color: var(--cf-accent); }\n.cf-sec-row .cf-input-line { flex: 1; min-width: 120px; padding: 5px 8px; font-size: 14px; }\n.cf-empty { opacity: .55; text-align: center; padding: 30px 10px; }\n.cf-empty[hidden] { display: none; }\n\n/* Библиотека */\n.cf-lib-bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px 0; }\n.cf-lib-grid { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 10px; align-content: start; }\n.cf-lib-grid > .cf-empty { grid-column: 1 / -1; }\n.cf-lib-note { padding: 6px 14px 10px; text-align: center; }\n.cf-lib-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; padding: 10px; background: color-mix(in srgb, var(--cf-panel) 70%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; }\n.cf-lib-thumb { width: 64px; height: 86px; border-radius: 8px; overflow: hidden; background: var(--cf-panel); display: flex; align-items: center; justify-content: center; color: var(--cf-accent); font-size: 22px; }\n.cf-lib-thumb img { width: 100%; height: 100%; object-fit: cover; }\n.cf-lib-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }\n.cf-lib-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700; }\n.cf-lib-name-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n.cf-lib-snippet { font-size: .85em; opacity: .8; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }\n.cf-lib-actions { grid-column: 1 / -1; display: flex; gap: 4px; justify-content: flex-end; border-top: 1px solid color-mix(in srgb, var(--cf-text) 10%, transparent); padding-top: 6px; }\n.cf-lib-btn { border: 1px solid color-mix(in srgb, var(--cf-accent) 40%, transparent); min-width: 40px; }\n\n/* Настройки */\n.cf-settings-body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 14px; display: flex; flex-direction: column; gap: 16px; }\n.cf-group { display: flex; flex-direction: column; gap: 10px; padding: 12px; background: color-mix(in srgb, var(--cf-panel) 60%, transparent); border: 1px solid color-mix(in srgb, var(--cf-text) 12%, transparent); border-radius: 10px; }\n.cf-group-title { font-weight: 700; color: var(--cf-accent); }\n.cf-field { display: flex; flex-direction: column; gap: 4px; }\n.cf-field-label { font-size: .9em; font-weight: 600; opacity: .9; }\n.cf-s-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 10px; }\n.cf-s-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 8px 12px; }\n.cf-swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(96px, 100%), 1fr)); gap: 8px; }\n.cf-swatch {\n    display: flex; flex-direction: column; align-items: center; gap: 6px;\n    padding: 10px 6px; border-radius: 10px; cursor: pointer; font: inherit; font-size: .85em;\n    background: var(--sw-bg); color: var(--cf-text);\n    border: 2px solid transparent; outline: 1px solid color-mix(in srgb, var(--cf-text) 20%, transparent);\n}\n.cf-swatch.cf-sw-auto { background: linear-gradient(135deg, #17171d 50%, #f6f1e7 50%); }\n.cf-swatch.cf-active { border-color: var(--cf-accent); outline-color: var(--cf-accent); }\n.cf-sw-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--sw-ac); border: 2px solid rgba(255,255,255,.5); }\n.cf-sw-name { background: rgba(0,0,0,.55); color: #fff; padding: 1px 8px; border-radius: 6px; }\n\n/* Панель в Extensions */\n#cf_settings .menu_button { width: 100%; }\n\n/* Телефон и низкие экраны: окно занимает весь экран и не вылезает за его пределы.\n   Размер берётся от fixed-оверлея (inset: 0), а не от vh/dvh, чтобы не зависеть от адресной строки браузера. */\n@media (max-width: 720px), (max-height: 520px) {\n    .cf-overlay { align-items: stretch; justify-content: stretch; backdrop-filter: none; }\n    .cf-window {\n        width: 100%; height: 100%;\n        max-width: 100%; max-height: 100%;\n        border-radius: 0; border: none;\n        padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);\n        box-shadow: none;\n    }\n    .cf-head { padding-top: max(8px, env(safe-area-inset-top, 0px)); }\n}\n@media (max-width: 720px) {\n    .cf-window { font-size: 14px; }\n    /* 16px в полях ввода: иначе мобильные браузеры приближают страницу при фокусе */\n    .cf-overlay input, .cf-overlay textarea, .cf-overlay select,\n    .cf-ta-sec, .cf-ta-first, .cf-sec-row .cf-input-line { font-size: 16px; }\n    .cf-tabs { padding: 0 4px; }\n    .cf-tab { flex: 1 1 0; justify-content: center; padding: 10px 4px; gap: 5px; font-size: .88em; }\n    .cf-body { grid-template-columns: minmax(0, 1fr); padding: 10px; gap: 12px; }\n    .cf-meter { top: -10px; }\n    .cf-lib-grid { grid-template-columns: minmax(0, 1fr); padding: 10px; }\n    .cf-lib-bar { padding: 10px 10px 0; }\n    .cf-settings-body { padding: 10px; }\n    .cf-group { padding: 10px; }\n    /* нижняя панель: одна строка, у второстепенных кнопок только иконки */\n    .cf-foot { flex-wrap: nowrap; gap: 6px; padding: 8px 10px max(8px, env(safe-area-inset-bottom, 0px)); }\n    .cf-foot .cf-btn { flex: 1 1 0; min-width: 40px; padding: 8px 6px; }\n    .cf-foot .cf-btn .cf-bl { display: none; }\n    .cf-foot .cf-primary { flex: 3 1 0; }\n    .cf-foot .cf-primary .cf-bl { display: inline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n    .cf-avatar { width: 72px; height: 96px; }\n}\n@media (max-height: 520px) {\n    .cf-head { padding-bottom: 4px; }\n    .cf-tab { padding: 6px 10px; }\n    .cf-foot { padding-top: 6px; }\n    .cf-btn { min-height: 34px; }\n}\n\n/* Режим: персонаж / персона */\n.cf-overlay .cf-hide { display: none !important; }\n.cf-seg { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; gap: 3px; background: var(--cf-panel); border: 1px solid color-mix(in srgb, var(--cf-text) 14%, transparent); border-radius: 10px; }\n.cf-seg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; border: none; background: transparent; color: var(--cf-text); opacity: .7; font: inherit; font-weight: 600; padding: 8px 10px; border-radius: 8px; cursor: pointer; }\n.cf-seg button.cf-active { background: var(--cf-accent); color: var(--cf-on-accent); opacity: 1; }\n.cf-seg button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n.cf-badge { flex: none; font-size: .7em; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--cf-accent) 25%, transparent); color: var(--cf-accent); vertical-align: middle; }\n";
 
 /* ═══ schema ═══ */
 const KEY = 'charforge';
@@ -238,13 +266,27 @@ const SECTIONS = [
             { key: 'Verbal tics', hint: 'filler words, repeated phrases, accent' },
             {
                 key: 'Examples',
-                hint: (s) => `${s.examples} short in-character lines, each on its own line starting with "- ", covering greeting, annoyance, affection, teasing${s.sections.sexuality ? ', flirting/kiss' : ''}`,
+                hint: (s) => `${examplesOf(s)} short in-character lines, each on its own line starting with "- ", covering greeting, annoyance, affection, teasing${s.sections.sexuality ? ', flirting/kiss' : ''}`,
             },
         ],
     },
 ];
 
 /** Темы. Цвета описаны в style.css; здесь только превью для переключателя. */
+/** Урезанная версия анкеты для персоны (юзера): меньше полей, без взаимоотношений. */
+const PERSONA_FIELDS = {
+    basic: ['Name', 'Gender', 'Age', 'Species', 'Occupation'],
+    personality: ['Outer', 'Inner', 'Traits', 'Fears/Weaknesses', 'Habits', 'Likes', 'Dislikes'],
+    details: ['Goals', 'Trivia'],
+    speech: ['Tone', 'Verbal tics'],
+};
+const PERSONA_WEIGHTS = { speech: 0.08, details: 0.05 };
+for (const sec of SECTIONS) {
+    if (sec.id === 'relationships') sec.noPersona = true;
+    if (PERSONA_FIELDS[sec.id]) sec.pfields = sec.fields.filter(f => PERSONA_FIELDS[sec.id].includes(f.key));
+    if (PERSONA_WEIGHTS[sec.id]) sec.pweight = PERSONA_WEIGHTS[sec.id];
+}
+
 const THEMES = [
     { id: 'auto', bg: '#17171d', ac: '#f6f1e7' },
     { id: 'midnight', bg: '#17171d', ac: '#a07cf0' },
@@ -254,7 +296,7 @@ const THEMES = [
 ];
 
 const DEFAULT_DRAFT = {
-    name: '', concept: '', refText: '', dossier: {}, firstMes: '', scene: '',
+    kind: 'char', name: '', concept: '', refText: '', dossier: {}, firstMes: '', scene: '',
     avatar: '', avatarAsRef: false, libraryId: '',
 };
 
@@ -263,6 +305,7 @@ const DEFAULTS = {
     theme: 'auto',
     profileId: '',
     tokenBudget: 1000,
+    personaBudget: 700,
     maxResponse: 4200,
     examples: 4,
     creativity: 'balanced',
@@ -292,9 +335,17 @@ function getSettings() {
 const saveSettings = () => SillyTavern.getContext().saveSettingsDebounced();
 const isOn = (s, sec) => sec.id === 'basic' || !!s.sections[sec.id];
 
+/* Режим «персона»: свой бюджет, меньше полей, без взаимоотношений и первого сообщения. */
+const isPersona = (s) => s.draft?.kind === 'persona';
+const budgetOf = (s) => (isPersona(s) ? s.personaBudget : s.tokenBudget);
+const examplesOf = (s) => (isPersona(s) ? Math.min(2, s.examples) : s.examples);
+const secFields = (sec, s) => (isPersona(s) && sec.pfields) || sec.fields;
+const secWeight = (sec, s) => (isPersona(s) && sec.pweight) || sec.weight;
+
 /* ═══ prompts ═══ */
 const WORDS_PER_TOKEN = 0.72;
-const enabledSections = (s) => SECTIONS.filter(x => isOn(s, x));
+const enabledSections = (s) => SECTIONS.filter(x => isOn(s, x) && !(isPersona(s) && x.noPersona));
+const nameLabel = (s) => (isPersona(s) ? 'PERSONA NAME' : 'CHARACTER NAME');
 const wordBudget = (tokens) => Math.max(40, Math.round(tokens * WORDS_PER_TOKEN * 0.92));
 const countWords = (text) => (text.trim() ? text.trim().split(/\s+/).length : 0);
 
@@ -306,11 +357,11 @@ const CREATIVITY_RULES = {
 
 /** denom: секции, по которым делится бюджет (для одной секции передаём все включённые). */
 function skeleton(s, secs, denom = secs) {
-    const total = wordBudget(s.tokenBudget);
-    const wsum = denom.reduce((a, x) => a + x.weight, 0);
+    const total = wordBudget(budgetOf(s));
+    const wsum = denom.reduce((a, x) => a + secWeight(x, s), 0);
     return secs.map(sec => {
-        const w = Math.max(8, Math.round(total * sec.weight / wsum));
-        const lines = sec.fields.map(f => {
+        const w = Math.max(8, Math.round(total * secWeight(sec, s) / wsum));
+        const lines = secFields(sec, s).map(f => {
             const hint = typeof f.hint === 'function' ? f.hint(s) : f.hint;
             return `${f.key}: <${hint}>`;
         });
@@ -319,7 +370,7 @@ function skeleton(s, secs, denom = secs) {
 }
 
 function rules(s, secs, name, sectionWords = 0) {
-    const words = wordBudget(s.tokenBudget);
+    const words = wordBudget(budgetOf(s));
     const r = [
         'Output ONLY the dossier: no preface, no commentary, no markdown, no code fences.',
         'Use exactly the section headers in square brackets and exactly the field keys from the skeleton, in the same order, one field per line. Do NOT copy the word targets or the <hints>.',
@@ -327,12 +378,15 @@ function rules(s, secs, name, sectionWords = 0) {
         'Write terse fragments separated by commas or semicolons. No full sentences, no filler, no flowery prose, no repetition between fields.',
         sectionWords
             ? `HARD LIMIT: this section is at most ${sectionWords} words. Every field must still be present.`
-            : `HARD LIMIT: the whole dossier is at most ${words} words (about ${s.tokenBudget} tokens). Respect the per-section word targets. Plan the length so the LAST section is complete: if you run long, shorten earlier fields instead of cutting off the end.`,
+            : `HARD LIMIT: the whole dossier is at most ${words} words (about ${budgetOf(s)} tokens). Respect the per-section word targets. Plan the length so the LAST section is complete: if you run long, shorten earlier fields instead of cutting off the end.`,
         CREATIVITY_RULES[s.creativity] || CREATIVITY_RULES.balanced,
-        'Write {{char}} for the character and {{user}} for the user\'s character. The real name appears only in the Name field.',
-        name ? `The character's name is "${name}": use it exactly in the Name field.` : 'Invent a fitting name for the Name field.',
+        isPersona(s)
+            ? 'This is a PERSONA: the profile of the user\'s own character. Refer to them as {{user}}; never use {{char}}. The real name appears only in the Name field. Describe stable traits only; never write {{user}}\'s dialogue, actions or feelings inside a scene.'
+            : 'Write {{char}} for the character and {{user}} for the user\'s character. The real name appears only in the Name field.',
+        name ? `The ${isPersona(s) ? 'persona' : 'character'}'s name is "${name}": use it exactly in the Name field.` : 'Invent a fitting name for the Name field.',
         'Write in English.',
     ];
+    if (isPersona(s)) r.push('Keep it simple and practical: only the essentials that make the persona recognizable.');
     if (secs.some(x => x.id === 'relationships')) {
         r.push(s.inventPeople
             ? 'Relationships: invent specific named people around the character (family, allies, enemies) with a few words on each relation.'
@@ -341,11 +395,11 @@ function rules(s, secs, name, sectionWords = 0) {
     if (secs.some(x => x.id === 'sexuality')) {
         r.push('The Sexuality section applies to adults only: if the character is under 18, write N/A in each of its fields.');
     }
-    return 'You write compact character dossiers for roleplay character cards.\nRules:\n' + r.map((x, i) => `${i + 1}. ${x}`).join('\n');
+    return (isPersona(s) ? 'You write compact persona profiles (the user\'s own roleplay character).' : 'You write compact character dossiers for roleplay character cards.') + '\nRules:\n' + r.map((x, i) => `${i + 1}. ${x}`).join('\n');
 }
 
 function userContent(s, name, concept, refText, images) {
-    let text = name ? `CHARACTER NAME: ${name}\n\n` : '';
+    let text = name ? `${nameLabel(s)}: ${name}\n\n` : '';
     text += `CONCEPT:\n${concept.trim() || '(none, use references)'}`;
     if (refText.trim()) text += `\n\nREFERENCES (treat as canon):\n${refText.trim()}`;
     const useImgs = s.sendImages && images.length > 0;
@@ -364,20 +418,20 @@ function buildGenerateMessages(s, name, concept, refText, images) {
 
 function buildSectionMessages(s, sec, name, concept, refText, dossierText, instruction) {
     const all = enabledSections(s);
-    const wsum = all.reduce((a, x) => a + x.weight, 0);
-    const secWords = Math.max(15, Math.round(wordBudget(s.tokenBudget) * sec.weight / wsum * 1.15));
+    const wsum = all.reduce((a, x) => a + secWeight(x, s), 0);
+    const secWords = Math.max(15, Math.round(wordBudget(budgetOf(s)) * secWeight(sec, s) / wsum * 1.15));
     const sys = `${rules(s, [sec], name, secWords)}\n\nTask: write ONLY the section [${sec.title}] for the dossier below. Keep it consistent with the other sections. Output only that one section (header + fields).\n\nSKELETON:\n${skeleton(s, [sec], all)}`;
-    let user = `CURRENT DOSSIER:\n${dossierText || '(empty)'}\n\n${name ? `CHARACTER NAME: ${name}\n\n` : ''}CONCEPT:\n${concept.trim() || '(see dossier)'}`;
+    let user = `CURRENT DOSSIER:\n${dossierText || '(empty)'}\n\n${name ? `${nameLabel(s)}: ${name}\n\n` : ''}CONCEPT:\n${concept.trim() || '(see dossier)'}`;
     if (refText.trim()) user += `\n\nREFERENCES:\n${refText.trim()}`;
     user += instruction.trim() ? `\n\nINSTRUCTION FOR THE [${sec.title}] SECTION: ${instruction.trim()}` : `\n\nWrite the [${sec.title}] section${dossierText.includes(`[${sec.title}]`) ? ' as a fresh, different take' : ''}.`;
     return [{ role: 'system', content: sys }, { role: 'user', content: user }];
 }
 
 function buildCompressMessages(s, dossierText) {
-    const words = wordBudget(s.tokenBudget);
+    const words = wordBudget(budgetOf(s));
     const sys = [
-        'You compress character dossiers.',
-        `Rewrite the dossier in at most ${words} words (about ${s.tokenBudget} tokens).`,
+        isPersona(s) ? 'You compress persona profiles.' : 'You compress character dossiers.',
+        `Rewrite the dossier in at most ${words} words (about ${budgetOf(s)} tokens).`,
         'Keep every section header in square brackets and every field key, in the same order.',
         'Preserve all distinctive facts; remove filler, merge synonyms, shorten phrasing. Keep {{char}} and {{user}}.',
         'Output ONLY the compressed dossier, no commentary, no markdown.',
@@ -424,13 +478,13 @@ function sectionIssues(s, sec, text) {
     const lines = (text || '').split(/\r?\n/);
     const keyOf = (l) => { const i = l.indexOf(':'); return i > 0 ? normKey(l.slice(0, i)) : ''; };
     const issues = [];
-    for (const f of sec.fields) {
+    for (const f of secFields(sec, s)) {
         const idx = lines.findIndex(l => keyOf(l) === normKey(f.key));
         if (idx < 0) { issues.push(f.key); continue; }
         const val = lines[idx].slice(lines[idx].indexOf(':') + 1).trim();
         if (f.key === 'Examples') {
             const n = lines.slice(idx + 1).filter(l => /^\s*[-*•]/.test(l)).length + (val ? 1 : 0);
-            if (n < Math.max(1, s.examples - 1)) issues.push(f.key);
+            if (n < Math.max(1, examplesOf(s) - 1)) issues.push(f.key);
         } else if (!val) issues.push(f.key);
     }
     return issues;
@@ -463,7 +517,7 @@ function extractSection(text, sec) {
 /** Итоговый текст для Description. all=true: игнорировать выключенные секции (для библиотеки). */
 function assemble(s, dossier, all = false) {
     return SECTIONS
-        .filter(sec => all || isOn(s, sec))
+        .filter(sec => all || (isOn(s, sec) && !(isPersona(s) && sec.noPersona)))
         .filter(sec => (dossier[sec.id] || '').trim())
         .map(sec => `[${sec.title}]\n${dossier[sec.id].trim()}`)
         .join('\n');
@@ -688,10 +742,15 @@ function buildWindow() {
       <div class="cf-view" id="cf-v-create">
         <div class="cf-body">
           <div class="cf-col cf-input">
+            <div class="cf-seg" id="cf-kind">
+              <button type="button" data-k="char"><i class="fa-solid fa-masks-theater"></i><span>${t('kindChar')}</span></button>
+              <button type="button" data-k="persona"><i class="fa-solid fa-user"></i><span>${t('kindPersona')}</span></button>
+            </div>
             <label class="cf-label" for="cf-name">${t('name')}</label>
             <input id="cf-name" class="cf-input-line" type="text" autocomplete="off">
-            <label class="cf-label" for="cf-concept">${t('concept')}</label>
+            <label class="cf-label" for="cf-concept" id="cf-concept-label">${t('concept')}</label>
             <textarea id="cf-concept" class="cf-ta" rows="7"></textarea>
+            <div class="cf-row cf-hide" id="cf-pullrow"><button class="cf-btn cf-small" id="cf-pull-persona" data-act><i class="fa-solid fa-file-import"></i> ${t('pullPersona')}</button></div>
             <label class="cf-label" for="cf-ref">${t('refs')}</label>
             <textarea id="cf-ref" class="cf-ta" rows="3"></textarea>
             <div class="cf-images" id="cf-images"></div>
@@ -700,7 +759,7 @@ function buildWindow() {
               <input type="file" id="cf-file" accept="image/*" multiple hidden>
             </div>
             <div class="cf-note" id="cf-imgnote"></div>
-            <div class="cf-label">${t('avatar')}</div>
+            <div id="cf-avatar-block"><div class="cf-label" id="cf-avatar-label">${t('avatar')}</div>
             <div class="cf-avatar-row">
               <div class="cf-avatar" id="cf-avatar"></div>
               <div class="cf-avatar-side">
@@ -711,7 +770,7 @@ function buildWindow() {
                 </div>
                 <label class="cf-check"><input type="checkbox" id="cf-avatar-ref"><span>${t('avatarAsRef')}</span></label>
               </div>
-            </div>
+            </div></div>
             <div class="cf-row">
               <button class="cf-btn cf-primary" id="cf-gen" data-act><i class="fa-solid fa-wand-magic-sparkles"></i> ${t('generate')}</button>
               <button class="cf-btn cf-danger" id="cf-cancel" hidden>${t('cancel')}</button>
@@ -783,6 +842,8 @@ function buildWindow() {
     qs('#cf-avatar-file').onchange = onPickAvatar;
     qs('#cf-rm-avatar').onclick = () => { draft().avatar = ''; saveSettings(); renderAvatar(); };
 
+    overlay.querySelectorAll('#cf-kind button').forEach(b => { b.onclick = () => setKind(b.dataset.k); });
+    qs('#cf-pull-persona').onclick = doPullPersona;
     qs('#cf-gen').onclick = doGenerate;
     qs('#cf-cancel').onclick = () => state.abort?.abort();
     qs('#cf-genfirst').onclick = doFirst;
@@ -806,11 +867,95 @@ function fillInputs() {
     qs('#cf-firstmes').value = d.firstMes;
     qs('#cf-avatar-ref').checked = !!d.avatarAsRef;
     qs('#cf-imgnote').textContent = s.sendImages ? t('imgNote') : t('imgNoteOff');
+    updateKindUI();
     renderAvatar();
     renderImages();
     renderSections();
     updateFirstUI();
     setStatus('');
+}
+
+/** Подстраивает окно под режим: персонаж или персона. */
+function updateKindUI() {
+    const d = draft(), persona = d.kind === 'persona';
+    overlay.querySelectorAll('#cf-kind button').forEach(b => b.classList.toggle('cf-active', b.dataset.k === d.kind));
+    ['#cf-first', '#cf-export'].forEach(sel => qs(sel).classList.toggle('cf-hide', persona));
+    qs('#cf-avatar-label').textContent = persona ? t('avatarPersona') : t('avatar');
+    qs('#cf-pullrow').classList.toggle('cf-hide', !persona);
+    qs('#cf-concept-label').textContent = persona ? t('conceptPersona') : t('concept');
+    const btn = qs('#cf-create');
+    btn.querySelector('.cf-bl').textContent = persona ? t('applyPersona') : t('createChar');
+    btn.title = persona ? t('applyPersona') : t('createChar');
+    btn.querySelector('i').className = persona ? 'fa-solid fa-user-check' : 'fa-solid fa-user-plus';
+}
+
+function setKind(kind) {
+    const d = draft();
+    if (d.kind === kind) return;
+    d.kind = kind;
+    if (kind === 'persona' && !d.name.trim()) {
+        const n = stctx().name1;
+        if (n) { d.name = n; qs('#cf-name').value = n; }
+    }
+    saveSettings();
+    updateKindUI();
+    renderSections();
+    updateFirstUI();
+}
+
+function doPullPersona() {
+    const d = draft();
+    const c = stctx();
+    const text = String(c.powerUserSettings?.persona_description || document.getElementById('persona_description')?.value || '').trim();
+    if (!text) { setStatus(t('pullPersonaNone'), true); toast('warning', t('pullPersonaNone')); return; }
+    d.concept = d.concept.trim() ? `${d.concept.trim()}\n\n${text}` : text;
+    qs('#cf-concept').value = d.concept;
+    if (!d.name.trim() && c.name1) { d.name = c.name1; qs('#cf-name').value = c.name1; }
+    saveSettings();
+    setStatus(t('pullPersonaDone'));
+}
+
+/** Меняет файл аватара текущей персоны (загрузка поверх, как это делает сама Таверна при замене). */
+async function applyPersonaAvatar(dataUrl) {
+    const file = document.querySelector('#user_avatar_block .avatar.selected')?.getAttribute('imgfile');
+    if (!file) { toast('warning', t('personaAvatarNone')); return false; }
+    if (!window.confirm(t('personaAvatarReplace'))) return false;
+    try {
+        const blob = await (await fetch(dataUrl)).blob();
+        const fd = new FormData();
+        fd.append('avatar', blob, 'avatar.png');
+        fd.append('overwrite_name', file);
+        const res = await fetch('/api/avatars/upload', {
+            method: 'POST', headers: stctx().getRequestHeaders({ omitContentType: true }), body: fd, cache: 'no-cache',
+        });
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        // сбросить кэш картинок на странице, иначе старый аватар будет виден до перезагрузки
+        const stamp = Date.now();
+        document.querySelectorAll('img').forEach(img => {
+            const src = img.getAttribute('src') || '';
+            if (src.includes(file) || src.includes(encodeURIComponent(file))) {
+                img.setAttribute('src', `${src.replace(/([?&])_cf=\d+&?/, '$1').replace(/[?&]$/, '')}${src.includes('?') ? '&' : '?'}_cf=${stamp}`);
+            }
+        });
+        toast('success', t('personaAvatarDone'));
+        return true;
+    } catch (e) {
+        console.error('[CharForge] persona avatar failed', e);
+        toast('error', t('personaAvatarFail', { msg: e.message }));
+        return false;
+    }
+}
+
+/** Записывает описание в текущую персону Таверны (поле Persona Description), при наличии аватара предлагает заменить и его. */
+async function applyPersonaText(text, avatar = '') {
+    const ta = document.getElementById('persona_description');
+    if (!ta) { await copyText(text); toast('warning', t('personaNoField')); return false; }
+    if (ta.value.trim() && ta.value.trim() !== text.trim() && !window.confirm(t('personaReplace'))) return false;
+    ta.value = text;
+    ta.dispatchEvent(new Event('input', { bubbles: true })); // сработают и нативные, и jQuery-обработчики Таверны
+    toast('success', t('personaApplied', { name: stctx().name1 || '' }));
+    if (avatar) await applyPersonaAvatar(avatar);
+    return true;
 }
 
 /* ───────────── Состояние ───────────── */
@@ -1055,11 +1200,12 @@ async function updateTokens() {
     const text = assemble(s, s.draft.dossier);
     const n = text ? await countTokens(text) : 0;
     if (!overlay) return;
+    const max = budgetOf(s);
     const lbl = qs('#cf-tokens');
-    lbl.textContent = t('tokens', { n, max: s.tokenBudget });
+    lbl.textContent = t('tokens', { n, max });
     const fill = qs('#cf-bar-fill');
-    fill.style.width = `${Math.min(100, (n / s.tokenBudget) * 100)}%`;
-    const over = n > s.tokenBudget;
+    fill.style.width = `${Math.min(100, (n / max) * 100)}%`;
+    const over = n > max;
     fill.classList.toggle('cf-over', over);
     lbl.classList.toggle('cf-over-text', over);
 }
@@ -1105,6 +1251,10 @@ async function doCreate() {
     const s = getSettings(), d = s.draft;
     const text = assemble(s, d.dossier);
     if (!text) { setStatus(t('errNoDossier'), true); return; }
+    if (d.kind === 'persona') {
+        if (await applyPersonaText(text, d.avatar)) setStatus(t('personaApplied', { name: stctx().name1 || '' }));
+        return;
+    }
     const name = resolveName();
     if (!name) return;
     await createInST(name, text, d.firstMes, d.avatar, true);
@@ -1130,8 +1280,11 @@ async function doSave() {
     if (!text) { setStatus(t('errNoDossier'), true); return; }
     const name = resolveName();
     if (!name) return;
+    const persona = d.kind === 'persona';
+    const dossier = structuredClone(d.dossier);
+    if (persona) delete dossier.relationships;
     const data = {
-        name, dossier: structuredClone(d.dossier), firstMes: d.firstMes, scene: d.scene,
+        name, kind: d.kind, dossier, firstMes: persona ? '' : d.firstMes, scene: persona ? '' : d.scene,
         concept: d.concept, refText: d.refText, avatar: d.avatar,
         tokens: await countTokens(text), updated: Date.now(),
     };
@@ -1150,7 +1303,7 @@ async function doSave() {
 function doClear() {
     if (!window.confirm(t('clearConfirm'))) return;
     const s = getSettings();
-    s.draft = structuredClone(DEFAULT_DRAFT);
+    s.draft = { ...structuredClone(DEFAULT_DRAFT), kind: s.draft.kind };
     state.images = [];
     saveSettings();
     fillInputs();
@@ -1192,19 +1345,30 @@ function libCard(s, e) {
     } else th.innerHTML = '<i class="fa-solid fa-user"></i>';
 
     const info = el('div', 'cf-lib-info');
-    info.appendChild(el('div', 'cf-lib-name', e.name || t('untitled')));
+    const nm = el('div', 'cf-lib-name');
+    nm.appendChild(el('span', 'cf-lib-name-t', e.name || t('untitled')));
+    if (e.kind === 'persona') nm.appendChild(el('span', 'cf-badge', t('badgePersona')));
+    info.appendChild(nm);
     const date = new Date(e.updated || Date.now()).toLocaleDateString(LANG === 'ru' ? 'ru-RU' : 'en-GB');
     info.appendChild(el('div', 'cf-note', `${e.tokens || 0} ${t('tokShort')} · ${date}`));
     const snippet = (e.concept || assemble(s, e.dossier || {}, true)).replace(/\s+/g, ' ').slice(0, 110);
     info.appendChild(el('div', 'cf-lib-snippet', snippet));
 
     const acts = el('div', 'cf-lib-actions');
-    acts.append(
-        iconBtn('fa-pen-to-square', t('libEdit'), () => loadFromLibrary(e)),
-        iconBtn('fa-user-plus', t('libToST'), () => createInST(e.name, assemble(s, e.dossier || {}, true), e.firstMes || '', e.avatar || '', false)),
-        iconBtn('fa-file-export', t('libJson'), () => downloadJson(`${(e.name || 'character').replace(/[^\w\-]+/g, '_')}.json`, toCardV2(e.name, assemble(s, e.dossier || {}, true), e.firstMes || ''))),
-        iconBtn('fa-trash-can', t('libDelete'), () => deleteFromLibrary(e), 'cf-danger-text'),
-    );
+    if (e.kind === 'persona') {
+        acts.append(
+            iconBtn('fa-pen-to-square', t('libEdit'), () => loadFromLibrary(e)),
+            iconBtn('fa-user-check', t('libApply'), () => applyPersonaText(assemble(s, e.dossier || {}, true), e.avatar || '')),
+            iconBtn('fa-trash-can', t('libDelete'), () => deleteFromLibrary(e), 'cf-danger-text'),
+        );
+    } else {
+        acts.append(
+            iconBtn('fa-pen-to-square', t('libEdit'), () => loadFromLibrary(e)),
+            iconBtn('fa-user-plus', t('libToST'), () => createInST(e.name, assemble(s, e.dossier || {}, true), e.firstMes || '', e.avatar || '', false)),
+            iconBtn('fa-file-export', t('libJson'), () => downloadJson(`${(e.name || 'character').replace(/[^\w\-]+/g, '_')}.json`, toCardV2(e.name, assemble(s, e.dossier || {}, true), e.firstMes || ''))),
+            iconBtn('fa-trash-can', t('libDelete'), () => deleteFromLibrary(e), 'cf-danger-text'),
+        );
+    }
     card.append(th, info, acts);
     return card;
 }
@@ -1215,6 +1379,7 @@ function loadFromLibrary(e) {
     if (hasContent && d.libraryId !== e.id && !window.confirm(t('libLoadConfirm'))) return;
     s.draft = {
         ...structuredClone(DEFAULT_DRAFT),
+        kind: e.kind === 'persona' ? 'persona' : 'char',
         name: e.name || '', concept: e.concept || '', refText: e.refText || '',
         dossier: structuredClone(e.dossier || {}), firstMes: e.firstMes || '', scene: e.scene || '',
         avatar: e.avatar || '', libraryId: e.id,
@@ -1333,6 +1498,7 @@ function buildSettingsView() {
     }));
     const grid = el('div', 'cf-s-grid');
     field(grid, t('sBudget'), number('tokenBudget', 300, 4000, 50, updateTokens));
+    field(grid, t('sPersonaBudget'), number('personaBudget', 300, 2000, 50, updateTokens));
     field(grid, t('sMax'), number('maxResponse', 500, 16000, 100));
     field(grid, t('sExamples'), number('examples', 1, 10, 1));
     g.appendChild(grid);
@@ -1358,6 +1524,7 @@ function buildSettingsView() {
     }
     g.appendChild(sg);
     g.appendChild(el('small', 'cf-note', t('sBasicNote')));
+    g.appendChild(el('small', 'cf-note', t('sRelNote')));
 }
 
 /* Панель в Extensions: только кнопка открытия */
